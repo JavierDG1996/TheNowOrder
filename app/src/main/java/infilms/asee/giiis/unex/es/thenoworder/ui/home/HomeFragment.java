@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment {
         @Override
         protected List<Order> doInBackground(Void... voids) {
             AppDatabase database = AppDatabase.getDatabase(getActivity());
-            List<Order> items = database.orderDao().getAllOrders();
+            List<Order> items = database.orderDao().getAllPendentOrders();
             return items;
         }
     }

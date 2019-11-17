@@ -26,4 +26,7 @@ public interface OrderDao {
 
     @Query("SELECT * FROM `Order`")
     public List<Order> getAllOrders();
+
+    @Query("SELECT * FROM `Order` WHERE paid_order = '0'")
+    public List<Order> getAllPendentOrders();
 }

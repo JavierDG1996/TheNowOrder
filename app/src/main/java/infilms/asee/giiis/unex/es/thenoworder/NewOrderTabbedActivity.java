@@ -39,14 +39,29 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
     private Order newOrder;
     private int table_number;
 
+    private Boolean isNewOrder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_order_tabbed);
+
+        getIntentData();
         init();
         manageTabs();
-        getTableIntent();
 
+    }
+
+    public void getIntentData(){
+
+        this.isNewOrder = getIntent().getBooleanExtra(getString(R.string.intentIsInsert), true);
+        if(!this.isNewOrder){
+            this.product_order = new ArrayList<>((ArrayList<Product>) getIntent().getSerializableExtra(getString(R.string.intentProducts)));
+        }else{
+            this.product_order = new ArrayList<>();
+            table_number = getIntent().getIntExtra(getString(R.string.intentNumTable),0);
+            Toast.makeText(this,"Recibido mesa "+table_number,Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void init(){
@@ -58,16 +73,6 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-
-        this.product_order = new ArrayList<>();
-
-    }
-
-    //Método para obtener la mesa en un intent
-    private void getTableIntent(){
-        Intent intent = getIntent();
-        table_number = intent.getIntExtra(getString(R.string.intentNumTable),0);
-        Toast.makeText(this,"Recibido mesa "+table_number,Toast.LENGTH_SHORT).show();
     }
 
     //Método para añadir un producto a una petición
@@ -129,6 +134,10 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
+        if(!this.isNewOrder){
+            Intent intent = new Intent();
+            setResult(RESULT_CANCELED, intent);
+        }
         this.finish();
     }
 
@@ -154,10 +163,17 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.add_order) {
-            newOrder = new Order(table_number, product_order);
-            Intent intent = new Intent(this, SummaryOrderActivity.class);
-            intent.putExtra(getString(R.string.intentOrder), newOrder);
-            startActivity(intent);
+            if(this.isNewOrder){
+                newOrder = new Order(table_number, product_order);
+                Intent intent = new Intent(this, SummaryOrderActivity.class);
+                intent.putExtra(getString(R.string.intentOrder), newOrder);
+                startActivity(intent);
+            }else{
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(getString(R.string.intentProducts),this.product_order);
+                setResult(RESULT_OK, returnIntent);
+                this.finish();
+            }
 
             return true;
         }

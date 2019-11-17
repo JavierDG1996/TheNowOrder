@@ -16,7 +16,10 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_order_list_id"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="match_parent"
+            android:forceHasOverlappingRendering="true">
+
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/no_orders"
