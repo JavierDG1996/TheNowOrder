@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SummaryOrderActivity"></activity>
+        <activity android:name=".PayBillActivity"></activity>
+        <activity android:name=".SummaryOrderActivity" />
         <activity
             android:name=".NewOrderTabbedActivity"
             android:label="@string/title_activity_new_order_tabbed"

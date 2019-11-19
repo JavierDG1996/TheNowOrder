@@ -39,4 +39,15 @@ public class SelectTableActivity extends AppCompatActivity {
         rv_table_list.setAdapter(tableAdapter);
 
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void onBackPressed(){
+        this.finish();
+    }
 }

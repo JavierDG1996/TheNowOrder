@@ -69,7 +69,11 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getResources().getString(R.string.create_order));
+        if(!this.isNewOrder)
+            actionBar.setTitle(getResources().getString(R.string.update_order));
+        else
+            actionBar.setTitle(getResources().getString(R.string.create_order));
+
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);

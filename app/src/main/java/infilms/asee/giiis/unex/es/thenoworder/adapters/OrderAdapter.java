@@ -13,6 +13,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import infilms.asee.giiis.unex.es.thenoworder.PayBillActivity;
 import infilms.asee.giiis.unex.es.thenoworder.R;
 import infilms.asee.giiis.unex.es.thenoworder.SummaryOrderActivity;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
@@ -50,10 +51,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         holder.pay_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /**Intent intent = new Intent(context, PayOrderActivity.class);
+                Intent intent = new Intent(context, PayBillActivity.class);
                 intent.putExtra(context.getString(R.string.intentOrder), orderList.get(position));
                 context.startActivity(intent);
-                 **/
+
             }
         });
 
@@ -67,6 +68,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                 context.startActivity(intent);
             }
         });
+
+
     }
 
     @Override
