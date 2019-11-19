@@ -17,10 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-
+import java.lang.Thread;
 import java.util.ArrayList;
 import java.util.List;
 
+import infilms.asee.giiis.unex.es.thenoworder.API.NetworkingAndroidHttpClientJSON;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
 import infilms.asee.giiis.unex.es.thenoworder.ui.main.SectionsPagerAdapter;
@@ -40,12 +41,18 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
     private int table_number;
 
     private Boolean isNewOrder;
+    NetworkingAndroidHttpClientJSON api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_order_tabbed);
-
+        api= new NetworkingAndroidHttpClientJSON();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         getIntentData();
         init();
         manageTabs();
@@ -100,6 +107,8 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
         this.drinks.add(soda03);
         this.drinks.add(soda04);
 
+        foods=api.getProduct_list();
+/*
         this.foods = new ArrayList<>();
         Product food01 = new Product("Menú 1: pasta", (float) 7.99);
         Product food02 = new Product("Menú 2: cocido", (float) 8.99);
@@ -109,7 +118,7 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
         this.foods.add(food02);
         this.foods.add(food03);
         this.foods.add(food04);
-
+*/
         this.desserts = new ArrayList<>();
         Product dessert01 = new Product("Helado", (float) 7.99);
         Product dessert02 = new Product("Zumo", (float) 8.99);
