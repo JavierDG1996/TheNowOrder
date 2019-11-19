@@ -45,6 +45,7 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //cambios muchos cambios
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_order_tabbed);
         api= new NetworkingAndroidHttpClientJSON();
