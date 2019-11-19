@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
 
         manageNavigationDrawer();
         manageFloatingButton();
-        loadDefaultFragment();
 
 
 
@@ -47,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void loadDefaultFragment() {
+   /* private void loadDefaultFragment() {
         //Carga fragment por defecto
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.mainActivityContent, new HomeFragment()).commit();
-    }
+        //FragmentManager fragmentManager = getSupportFragmentManager();
+        //fragmentManager.beginTransaction().replace(R.id.mainActivityContent, new HomeFragment()).commit();
+    }*/
 
     public void manageNavigationDrawer(){
         Toolbar toolbar = findViewById(R.id.toolbar);
