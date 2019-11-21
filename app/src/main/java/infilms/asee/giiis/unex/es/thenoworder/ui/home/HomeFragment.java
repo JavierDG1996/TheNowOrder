@@ -1,5 +1,6 @@
 package infilms.asee.giiis.unex.es.thenoworder.ui.home;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ public class HomeFragment extends Fragment {
 
     private List<Order> orderList;
     private RecyclerView order_list_rv;
+
 
     //private HomeViewModel homeViewModel;//Se usará en la siguiente practica NO BORRAR
 
@@ -63,7 +65,8 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    private void loadOrders(){
+
+    public void loadOrders(){
         try {
             this.orderList = new getAllOrders().execute().get();
         } catch (ExecutionException e) {

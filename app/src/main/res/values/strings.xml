@@ -37,6 +37,8 @@
     <string name="pay_bill">Pagar</string>
     <string name="msg_cash">0.00</string>
     <string name="msg_bill">Coloque cantidad en efectivo</string>
+    <string name="msg_total_price">Precio Total:</string>
+    <string name="pay_bill_activity">Pagar la cuenta</string>
 
     <string name="modoNoche">Modo Noche</string>
     <string name="modoNocheSummary">Activa el modo noche</string>

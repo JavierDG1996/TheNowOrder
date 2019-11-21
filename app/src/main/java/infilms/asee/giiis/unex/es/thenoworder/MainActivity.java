@@ -8,6 +8,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -25,9 +27,12 @@ import infilms.asee.giiis.unex.es.thenoworder.ui.home.HomeFragment;
 import android.view.Menu;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +41,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
         manageNavigationDrawer();
         manageFloatingButton();
 
 
-
-
-
     }
+
+
+
+
 
    /* private void loadDefaultFragment() {
         //Carga fragment por defecto
