@@ -102,7 +102,7 @@ public class NetworkingAndroidHttpClientJSON {
 
         @Override
         protected void onPostExecute(List<Product> items) {
-            setProduct_list(items);
+
             for (Product e : items) {
                 Log.v("Lista de productos", "API: " + e.getProduct_name());
             }

@@ -1,5 +1,6 @@
 package infilms.asee.giiis.unex.es.thenoworder;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +33,7 @@ public class PayBillActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pay_bill);
 
         getIntentOrder();
+        init();
 
         this.total_price = (TextView) findViewById(R.id.total_price_bill_tv);
         this.total_price.setText(String.valueOf(order.getTotal_price()));
@@ -59,6 +61,16 @@ public class PayBillActivity extends AppCompatActivity {
     private void getIntentOrder(){
         Intent intent = getIntent();
         this.order = (Order) intent.getSerializableExtra(getString(R.string.intentOrder));
+    }
+
+    public void init(){
+        ActionBar actionBar = getSupportActionBar();
+
+        actionBar.setTitle(getResources().getString(R.string.pay_bill_activity));
+
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
     }
 
     private TextWatcher ShowTextAndButton = new TextWatcher() {
@@ -102,7 +114,10 @@ public class PayBillActivity extends AppCompatActivity {
             public void onClick(View view) {
                 order.setPaid_order(true);
                 new updateOrder().execute(order);
-                finish();
+                //finish();
+                finishAffinity(); //Este método finaliza la actividad, así como todas las actividades debajo de ella en la tarea actual que tengan la misma afinidad.
+                Intent intent = new Intent(view.getContext(), MainActivity.class);
+                startActivity(intent);
             }
         });
     }

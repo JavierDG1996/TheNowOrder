@@ -12,11 +12,14 @@ import android.widget.TextView;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import infilms.asee.giiis.unex.es.thenoworder.MainActivity;
 import infilms.asee.giiis.unex.es.thenoworder.PayBillActivity;
 import infilms.asee.giiis.unex.es.thenoworder.R;
 import infilms.asee.giiis.unex.es.thenoworder.SummaryOrderActivity;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
+import infilms.asee.giiis.unex.es.thenoworder.ui.home.HomeFragment;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
 
@@ -26,6 +29,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     public OrderAdapter(List<Order> orderList, Context context) {
         this.orderList = orderList;
         this.context = context;
+
     }
 
     @NonNull
@@ -54,6 +58,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                 Intent intent = new Intent(context, PayBillActivity.class);
                 intent.putExtra(context.getString(R.string.intentOrder), orderList.get(position));
                 context.startActivity(intent);
+
 
             }
         });
