@@ -1,6 +1,8 @@
 package infilms.asee.giiis.unex.es.thenoworder.classes;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import androidx.room.Entity;
@@ -39,6 +41,11 @@ public class Order implements Serializable {
         for(Product product : this.product_list){
             this.total_price = this.total_price + product.getProduct_price();
         }
+
+        BigDecimal bd = new BigDecimal(this.total_price);//Truncamos el precio total a dos decimales
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        this.total_price = bd.floatValue();
+
         return this.total_price;
     }
 
