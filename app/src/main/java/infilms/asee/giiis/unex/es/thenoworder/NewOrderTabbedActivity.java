@@ -3,8 +3,6 @@ package infilms.asee.giiis.unex.es.thenoworder;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.ActionBar;
@@ -14,10 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import java.lang.Thread;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,17 +42,17 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        api= new NetworkingAndroidHttpClientJSON(this);
         setContentView(R.layout.activity_new_order_tabbed);
-        api= new NetworkingAndroidHttpClientJSON();
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         getIntentData();
         init();
         manageTabs();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     public void getIntentData(){
@@ -93,60 +89,37 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
         Toast.makeText(this,getString(R.string.added)+" "+product.getProduct_name(),Toast.LENGTH_SHORT).show();
     }
 
-    //Método para cargar los productos
-    private void loadProducts() {
-        foods=api.getProduct_list();
-        desserts=api.getListDessert();
-        drinks=api.getListDrinks();
-  /*
-        this.drinks = new ArrayList<>();
-        Product soda01 = new Product("Pepsi", (float) 2.6);
-        Product soda02 = new Product("Kas", (float) 2.6);
-        Product soda03 = new Product("Tónica Schweppes", (float) 2.6);
-        Product soda04 = new Product("Lipton", (float) 2.6);
-
-        this.drinks.add(soda01);
-        this.drinks.add(soda02);
-        this.drinks.add(soda03);
-        this.drinks.add(soda04);
-
-
-
-        this.foods = new ArrayList<>();
-        Product food01 = new Product("Menú 1: pasta", (float) 7.99);
-        Product food02 = new Product("Menú 2: cocido", (float) 8.99);
-        Product food03 = new Product("Menú 3: pizza", (float) 9.99);
-        Product food04 = new Product("Menú 4: pizza familiar", (float) 11.99);
-        this.foods.add(food01);
-        this.foods.add(food02);
-        this.foods.add(food03);
-        this.foods.add(food04);
-
-        this.desserts = new ArrayList<>();
-        Product dessert01 = new Product("Helado", (float) 7.99);
-        Product dessert02 = new Product("Zumo", (float) 8.99);
-        Product dessert03 = new Product("Fruta", (float) 9.99);
-        Product dessert04 = new Product("Tarta", (float) 11.99);
-        this.desserts.add(dessert01);
-        this.desserts.add(dessert02);
-        this.desserts.add(dessert03);
-        this.desserts.add(dessert04);
-*/
-    }
-
     public void manageTabs(){
-
-        loadProducts();
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+        this.drinks = new ArrayList<>();
+        this.foods = new ArrayList<>();
+        this.desserts = new ArrayList<>();
         mSectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager(),drinks,foods,desserts);
 
         mViewPager = findViewById(R.id.container);
+        mViewPager.setOffscreenPageLimit(2);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
 
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(mViewPager);
     }
+
+    public void loadList(int numTab){
+        switch (numTab){
+            case 0:
+                mSectionsPagerAdapter.UpdateFragmentDrink(api.getListDrinks());
+                break;
+            case 1:
+                mSectionsPagerAdapter.UpdateFragmentFood(api.getProduct_list());
+                break;
+            case 2:
+                mSectionsPagerAdapter.UpdateFragmentDessert(api.getListDessert());
+                break;
+        }
+    }
+
 
     @Override
     public void onBackPressed(){

@@ -13,16 +13,22 @@ import java.util.List;
 import java.net.URL;
 import java.util.Random;
 
+import infilms.asee.giiis.unex.es.thenoworder.NewOrderTabbedActivity;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
+
 
 public class NetworkingAndroidHttpClientJSON {
 
     private List<Product> product_list;
     private List<Product> listDessert;
     private List<Product> listDrinks;
+    public NewOrderTabbedActivity newOrder;
 
-    public NetworkingAndroidHttpClientJSON() {
-        new HttpGetTask().execute();
+    public NetworkingAndroidHttpClientJSON(NewOrderTabbedActivity newOrder) {
+        new HttpGetTaskDrink().execute();
+        new HttpGetTaskFood().execute();
+        new HttpGetTaskDessert().execute();
+        this.newOrder = newOrder;
     }
 
     public List<Product> getProduct_list() {
@@ -52,7 +58,77 @@ public class NetworkingAndroidHttpClientJSON {
         this.listDrinks = listDrinks;
     }
 
-    class HttpGetTask extends AsyncTask<Void, Void, List<Product>> {
+    class HttpGetTaskFood extends AsyncTask<Void, Void, List<Product>> {
+        private static final String BASE_URL = "api.spoonacular.com";
+        private static final String JSON_SEG = "recipes";
+        private static final String JSON_SEG2 = "random";
+        private static final String Number = "number";
+        private static final String apiKey = "apiKey";
+        private static final String apiKeyValue = "f3bba258c5414ebc9083b7241491d522";
+
+
+        @Override
+        protected List<Product> doInBackground(Void... params) {
+            URL queryURL;
+            JSONObject result;
+
+            queryURL = NetworkUtils.buildURL(BASE_URL,
+                    new String[]{JSON_SEG, JSON_SEG2},
+                    new Pair(Number, "5"),
+                    new Pair(apiKey, apiKeyValue));
+            result = NetworkUtils.getJSONResponse(queryURL);
+
+            if (result != null) {
+                //Log.v("Lista de Recetas", "Getting response from the API");
+                return jsonToList(result);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Product> FoodList) {
+            super.onPostExecute(FoodList);
+            setProduct_list(FoodList);
+            newOrder.loadList(1);
+            for (Product e : FoodList) {
+                Log.v("Lista de comidas", "API: " + e.getProduct_name());
+            }
+        }
+
+        public List<Product> jsonToList(JSONObject responseObject) {
+            List<Product> Product_list = new ArrayList<>();
+
+            Random r = new Random();
+            int price;
+            String nameProduct;
+            JSONArray Products;
+            try {
+
+                Products = responseObject.getJSONArray("recipes");
+
+                //JSON de comida a Lista de comida
+                for (int idx = 0; idx < Products.length(); idx++) {
+                    // Get single Product data - a Map
+                    JSONObject Product = (JSONObject) Products.get(idx);
+                    price = r.nextInt(30);
+                    nameProduct = Product.get("title").toString();
+                    Product ProductObj = new Product(nameProduct, (float) price);
+
+                    Product_list.add(ProductObj);
+                    //Log.v("Nombre producto= ", nameProduct);
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return Product_list;
+        }
+    }
+
+
+    class HttpGetTaskDessert extends AsyncTask<Void, Void, List<Product>> {
         private static final String BASE_URL = "api.spoonacular.com";
         private static final String JSON_SEG = "recipes";
         private static final String JSON_SEG2 = "random";
@@ -61,7 +137,70 @@ public class NetworkingAndroidHttpClientJSON {
         private static final String apiKeyValue = "f3bba258c5414ebc9083b7241491d522";
         private static final String tipo = "type";
         private static final String postre = "dessert";
-        //https://www.thecocktaildb.com/api/json/v1/1/filter.php?a=Non_Alcoholic
+
+        @Override
+        protected List<Product> doInBackground(Void... params) {
+            URL queryURL;
+            JSONObject result;
+
+            queryURL = NetworkUtils.buildURL(BASE_URL,
+                    new String[]{JSON_SEG, JSON_SEG2},
+                    new Pair(tipo, postre),
+                    new Pair(Number, "5"),
+                    new Pair(apiKey, apiKeyValue));
+            result = NetworkUtils.getJSONResponse(queryURL);
+
+            if (result != null) {
+                //Log.v("Lista de Postres", "Getting response from the API");
+                return jsonToList(result);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Product> DessertList) {
+            super.onPostExecute(DessertList);
+            setListDessert(DessertList);
+            newOrder.loadList(2);
+            for (Product e : DessertList) {
+                Log.v("Lista de postres", "API: " + e.getProduct_name());
+            }
+
+        }
+
+        public List<Product> jsonToList(JSONObject responseObject) {
+            List<Product> Dessert_list = new ArrayList<>();
+
+            Random r = new Random();
+            int price;
+            String nameProduct;
+            JSONArray Products;
+            try {
+
+
+                Products = responseObject.getJSONArray("recipes");
+                for (int idx = 0; idx < Products.length(); idx++) {
+                    // Get single Product data - a Map
+                    JSONObject Product = (JSONObject) Products.get(idx);
+                    price = r.nextInt(30);
+                    nameProduct = Product.get("title").toString();
+                    Product ProductObj = new Product(nameProduct, (float) price);
+
+                    Dessert_list.add(ProductObj);
+                   // Log.v("Nombre producto= ", nameProduct);
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return Dessert_list;
+        }
+    }
+
+
+    class HttpGetTaskDrink extends AsyncTask<Void, Void, List<Product>> {
         private static final String BASE_URLdrink = "www.thecocktaildb.com";
         private static final String path = "api";
         private static final String path2 = "json";
@@ -73,111 +212,56 @@ public class NetworkingAndroidHttpClientJSON {
         @Override
         protected List<Product> doInBackground(Void... params) {
             URL queryURL;
-            JSONObject[] result = new JSONObject[3];
-
-            queryURL = NetworkUtils.buildURL(BASE_URL,
-                    new String[]{JSON_SEG, JSON_SEG2},
-                    new Pair(Number, "5"),
-                    new Pair(apiKey, apiKeyValue));
-            result[0] = NetworkUtils.getJSONResponse(queryURL);
-
-            queryURL = NetworkUtils.buildURL(BASE_URL,
-                    new String[]{JSON_SEG, JSON_SEG2},
-                    new Pair(tipo, postre),
-                    new Pair(Number, "5"),
-                    new Pair(apiKey, apiKeyValue));
-            result[1] = NetworkUtils.getJSONResponse(queryURL);
+            JSONObject result;
 
             queryURL = NetworkUtils.buildURL(BASE_URLdrink,
                     new String[]{path, path2, path3, path4, path5},
                     new Pair("a", param));
-            result[2] = NetworkUtils.getJSONResponse(queryURL);
+            result = NetworkUtils.getJSONResponse(queryURL);
 
             if (result != null) {
-                Log.v("Lista de Recetas", "Getting response from the API");
+                //Log.v("Lista de bebidas", "Getting response from the API");
                 return jsonToList(result);
             }
             return null;
         }
 
         @Override
-        protected void onPostExecute(List<Product> items) {
-            setProduct_list(items);
-            for (Product e : items) {
-                Log.v("Lista de productos", "API: " + e.getProduct_name());
+        protected void onPostExecute(List<Product> DrinksList) {
+            super.onPostExecute(DrinksList);
+            setListDrinks(DrinksList);
+            newOrder.loadList(0);
+            for (Product e : DrinksList) {
+                Log.v("Lista de bebidas", "API: " + e.getProduct_name());
             }
         }
 
-        public List<Product> jsonToList(JSONObject[] responseObject) {
-            List<Product> Product_list = new ArrayList<>();
-            List<Product> Dessert_list = new ArrayList<>();
+        public List<Product> jsonToList(JSONObject responseObject) {
             List<Product> Drinks_list = new ArrayList<>();
             Random r = new Random();
             int price;
-            String nombreProduct;
+            String nameProduct;
             JSONArray Products;
             try {
 
-                if (responseObject[0] != null) {
-                    Products = responseObject[0].getJSONArray("recipes");
+                Products = responseObject.getJSONArray("drinks");
+                //Products.length()
+                for (int idx = 0; idx < 10; idx++) {
+                    // Get single Product data - a Map
+                    JSONObject Product = (JSONObject) Products.get(idx);
+                    price = r.nextInt(30);
+                    nameProduct = Product.get("strDrink").toString();
+                    Product ProductObj = new Product(nameProduct, (float) price);
 
-                    //JSON de comida a Lista de comida
-                    for (int idx = 0; idx < Products.length(); idx++) {
-                        // Get single Product data - a Map
-                        JSONObject Product = (JSONObject) Products.get(idx);
-                        // Delete HTML tags from description
-                        //String description = Jsoup.parse(Product.get(DESCRIPTION_TAG).toString()).text();
-                        // Build Product object
-                        price = r.nextInt(30);
-                        nombreProduct = Product.get("title").toString();
-                        Product ProductObj = new Product(nombreProduct, (float) price);
-
-                        Product_list.add(ProductObj);
-                        Log.v("Nombre producto= ", nombreProduct);
-                    }
-                }
-                if (responseObject[1] != null) {
-                    Products = responseObject[1].getJSONArray("recipes");
-                    for (int idx = 0; idx < Products.length(); idx++) {
-                        // Get single Product data - a Map
-                        JSONObject Product = (JSONObject) Products.get(idx);
-                        // Delete HTML tags from description
-                        //String description = Jsoup.parse(Product.get(DESCRIPTION_TAG).toString()).text();
-                        // Build Product object
-                        price = r.nextInt(30);
-                        nombreProduct = Product.get("title").toString();
-                        Product ProductObj = new Product(nombreProduct, (float) price);
-
-                        Dessert_list.add(ProductObj);
-                        Log.v("Nombre producto= ", nombreProduct);
-                    }
-                }
-                if (responseObject[2] != null) {
-                    Products = responseObject[2].getJSONArray("drinks");
-                    //Products.length()
-                    for (int idx = 0; idx < 10; idx++) {
-                        // Get single Product data - a Map
-                        JSONObject Product = (JSONObject) Products.get(idx);
-                        // Delete HTML tags from description
-                        //String description = Jsoup.parse(Product.get(DESCRIPTION_TAG).toString()).text();
-                        // Build Product object
-                        price = r.nextInt(30);
-                        nombreProduct = Product.get("strDrink").toString();
-                        Product ProductObj = new Product(nombreProduct, (float) price);
-
-                        Drinks_list.add(ProductObj);
-                        Log.v("Nombre producto= ", nombreProduct);
-                    }
+                    Drinks_list.add(ProductObj);
+                    //Log.v("Nombre producto= ", nameProduct);
                 }
 
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            setProduct_list(Product_list);
-            setListDessert(Dessert_list);
-            setListDrinks(Drinks_list);
-            return Product_list;
+            return Drinks_list;
         }
     }
 }

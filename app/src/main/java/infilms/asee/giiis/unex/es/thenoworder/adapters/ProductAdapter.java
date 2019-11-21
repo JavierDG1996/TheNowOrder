@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -79,5 +80,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             product_description = (LinearLayout) view.findViewById(R.id.LinearLayout_product_list_new_order_id);
         }
     }
+
+    public void load(List<Product> newProduct_list){
+        product_list= new ArrayList<>();
+        product_list=newProduct_list;
+        notifyDataSetChanged();
+    }
+
 
 }

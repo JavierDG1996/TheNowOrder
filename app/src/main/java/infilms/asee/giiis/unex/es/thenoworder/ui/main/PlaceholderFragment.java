@@ -30,6 +30,7 @@ public class PlaceholderFragment extends Fragment {
     private ArrayList<Product> productList;
     //private PageViewModel pageViewModel; //Se usará en la siguiente practica
     private RecyclerView product_list_rv;
+    ProductAdapter P_adapter;
 
     //Almacenar los productos en el bundle a través de la variable PRODUCT_LIST
     public static PlaceholderFragment newInstance(List<Product> products) {
@@ -78,12 +79,22 @@ public class PlaceholderFragment extends Fragment {
         this.productList = (ArrayList<Product>) getArguments().getSerializable(PRODUCT_LIST);
 
         this.product_list_rv = root.findViewById(R.id.rv_product_list_id);
-        ProductAdapter P_adapter = new ProductAdapter(this.getContext(), this.productList, this.getActivity());
+        P_adapter = new ProductAdapter(this.getContext(), this.productList, this.getActivity());
         LinearLayoutManager LLManager = new LinearLayoutManager(this.getContext());
         LLManager.setOrientation(LinearLayoutManager.VERTICAL);
         this.product_list_rv.setLayoutManager(LLManager);
         this.product_list_rv.setAdapter(P_adapter);
 
         return root;
+    }
+
+    public void UpdateData(ArrayList<Product> productList){
+        P_adapter.load(productList);
+        product_list_rv.setAdapter(P_adapter);
+        P_adapter.notifyDataSetChanged();
+    }
+
+    public PlaceholderFragment myInstance(){
+        return this;
     }
 }

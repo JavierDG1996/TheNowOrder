@@ -39,6 +39,7 @@ dependencies {
     testImplementation 'androidx.room:room-testing:2.2.1'
 
     implementation "com.google.code.gson:gson:2.8.6"
+    implementation 'org.objectweb.think.minus.applications.L4:arch:1.0'
 
 
 }
