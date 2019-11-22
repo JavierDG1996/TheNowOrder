@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import infilms.asee.giiis.unex.es.thenoworder.MainActivity;
 import infilms.asee.giiis.unex.es.thenoworder.PayBillActivity;
 import infilms.asee.giiis.unex.es.thenoworder.R;
+import infilms.asee.giiis.unex.es.thenoworder.RecordDetailsActivity;
 import infilms.asee.giiis.unex.es.thenoworder.SummaryOrderActivity;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.AppDatabase;
@@ -80,18 +81,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                     context.startActivity(intent);
                 }
             });
+        }else {
+           holder.record_order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, RecordDetailsActivity.class);
+                    intent.putExtra(context.getString(R.string.intentOrder), orderList.get(position));
+
+                    context.startActivity(intent);
+                }
+            });
         }
-       /* holder.record_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, SummaryOrderActivity.class);
-                intent.putExtra(context.getString(R.string.intentOrder), orderList.get(position));
-                intent.putExtra(context.getString(R.string.intentIsInsert), false);
-
-                context.startActivity(intent);
-            }
-        });*/
-
 
     }
 

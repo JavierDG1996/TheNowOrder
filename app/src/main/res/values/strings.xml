@@ -46,5 +46,6 @@
     <string name="delete">Eliminar</string>
     <string name="cancel">Cancelar</string>
     <string name="record_order">Consultar historial</string>
+    <string name="record_order_activity">Historial de pedido</string>
     <string name="delete_order">Borrar pedido</string>
 </resources>
