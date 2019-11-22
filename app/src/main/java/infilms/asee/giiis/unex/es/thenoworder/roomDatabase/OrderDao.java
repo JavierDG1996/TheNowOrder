@@ -29,4 +29,7 @@ public interface OrderDao {
 
     @Query("SELECT * FROM `Order` WHERE paid_order = '0'")
     public List<Order> getAllPendentOrders();
+
+    @Query("SELECT * FROM `Order` WHERE paid_order = '1'")
+    public List<Order> getAllPaidOrders();
 }

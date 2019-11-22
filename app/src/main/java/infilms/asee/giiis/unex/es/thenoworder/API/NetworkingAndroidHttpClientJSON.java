@@ -64,8 +64,8 @@ public class NetworkingAndroidHttpClientJSON {
         private static final String JSON_SEG2 = "random";
         private static final String Number = "number";
         private static final String apiKey = "apiKey";
-        private static final String apiKeyValue = "f3bba258c5414ebc9083b7241491d522";
-
+        //private static final String apiKeyValue = "f3bba258c5414ebc9083b7241491d522";
+        private static final String apiKeyValue = "c6d8b6b3b2854d55af9d8154311ebaa5";
 
         @Override
         protected List<Product> doInBackground(Void... params) {
@@ -134,7 +134,8 @@ public class NetworkingAndroidHttpClientJSON {
         private static final String JSON_SEG2 = "random";
         private static final String Number = "number";
         private static final String apiKey = "apiKey";
-        private static final String apiKeyValue = "f3bba258c5414ebc9083b7241491d522";
+        //private static final String apiKeyValue = "f3bba258c5414ebc9083b7241491d522";
+        private static final String apiKeyValue = "c6d8b6b3b2854d55af9d8154311ebaa5";
         private static final String tipo = "type";
         private static final String postre = "dessert";
 

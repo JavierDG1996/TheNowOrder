@@ -45,7 +45,7 @@ public class PayBillActivity extends AppCompatActivity {
         this.pay_bill =(Button) findViewById(R.id.pay_bill_button);
 
         this.bill_product_list = (RecyclerView) findViewById(R.id.rv_bill_product_list);
-        SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this,this.order.getProduct_list());
+        SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this,this.order.getProduct_list(), this.order);
         LinearLayoutManager LLManager = new LinearLayoutManager(this);
         LLManager.setOrientation(LinearLayoutManager.VERTICAL);
         this.bill_product_list.setLayoutManager(LLManager);

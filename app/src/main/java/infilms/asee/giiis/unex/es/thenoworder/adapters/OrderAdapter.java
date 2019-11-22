@@ -2,6 +2,7 @@ package infilms.asee.giiis.unex.es.thenoworder.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +20,19 @@ import infilms.asee.giiis.unex.es.thenoworder.PayBillActivity;
 import infilms.asee.giiis.unex.es.thenoworder.R;
 import infilms.asee.giiis.unex.es.thenoworder.SummaryOrderActivity;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
+import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.AppDatabase;
 import infilms.asee.giiis.unex.es.thenoworder.ui.home.HomeFragment;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
 
     private List<Order> orderList;
     private Context context;
+    private boolean IsPaidOrders;
 
-    public OrderAdapter(List<Order> orderList, Context context) {
+    public OrderAdapter(List<Order> orderList, Context context, boolean IsPaidOrders) {
         this.orderList = orderList;
         this.context = context;
+        this.IsPaidOrders = IsPaidOrders;
 
     }
 
@@ -37,7 +41,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         LayoutInflater mInflater = LayoutInflater.from(context);
-        view = mInflater.inflate(R.layout.order_row, parent,false);
+        if(!IsPaidOrders)
+             view = mInflater.inflate(R.layout.order_row, parent,false);
+        else
+            view = mInflater.inflate(R.layout.paid_row, parent,false);
 
         return new MyViewHolder(view);
     }
@@ -51,19 +58,30 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         //holder.order_description.removeAllViews();
         //holder.order_description.addView(holder.order_price);
         //holder.order_description.addView(holder.order_table);
+        if(!IsPaidOrders) {
+            holder.pay_order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, PayBillActivity.class);
+                    intent.putExtra(context.getString(R.string.intentOrder), orderList.get(position));
+                    context.startActivity(intent);
 
-        holder.pay_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, PayBillActivity.class);
-                intent.putExtra(context.getString(R.string.intentOrder), orderList.get(position));
-                context.startActivity(intent);
 
+                }
+            });
 
-            }
-        });
+            holder.edit_order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, SummaryOrderActivity.class);
+                    intent.putExtra(context.getString(R.string.intentOrder), orderList.get(position));
+                    intent.putExtra(context.getString(R.string.intentIsInsert), false);
 
-        holder.edit_order.setOnClickListener(new View.OnClickListener() {
+                    context.startActivity(intent);
+                }
+            });
+        }
+       /* holder.record_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, SummaryOrderActivity.class);
@@ -72,7 +90,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
 
                 context.startActivity(intent);
             }
-        });
+        });*/
 
 
     }
@@ -89,19 +107,23 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         LinearLayout order_description;
         Button edit_order;
         Button pay_order;
+        Button record_order;
 
 
         //constructor de clase interna y vinculamos los atributos
         public MyViewHolder(View view){
             super(view);
 
-            order_price = (TextView) view.findViewById(R.id.order_price);
-            order_table = (TextView) view.findViewById(R.id.order_table);
-            order_description = (LinearLayout) view.findViewById(R.id.LinearLayout_order_list_all_order_id);
+            order_price = view.findViewById(R.id.order_price);
+            order_table = view.findViewById(R.id.order_table);
+            order_description = view.findViewById(R.id.LinearLayout_order_list_all_order_id);
 
             edit_order = view.findViewById(R.id.edit_order);
             pay_order = view.findViewById(R.id.pay_order);
+            record_order = view.findViewById(R.id.record_order);
 
         }
     }
+
+
 }

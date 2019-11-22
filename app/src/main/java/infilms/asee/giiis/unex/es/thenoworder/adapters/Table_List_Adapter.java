@@ -77,9 +77,9 @@ public class Table_List_Adapter extends RecyclerView.Adapter<Table_List_Adapter.
         public MyViewHolder(View view){
             super(view);
 
-            tv_table_title = (TextView) view.findViewById(R.id.table_number_id);
-            img_table = (ImageView) view.findViewById(R.id.table_img_id);
-            cardView = (CardView) view.findViewById(R.id.cardview_table_id);
+            tv_table_title = view.findViewById(R.id.table_number_id);
+            img_table = view.findViewById(R.id.table_img_id);
+            cardView = view.findViewById(R.id.cardview_table_id);
         }
     }
 }

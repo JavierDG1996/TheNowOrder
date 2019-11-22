@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
         loadOrders();
 
         this.order_list_rv = root.findViewById(R.id.rv_order_list_id);
-        OrderAdapter O_adapter = new OrderAdapter(this.orderList,this.getContext());
+        OrderAdapter O_adapter = new OrderAdapter(this.orderList,this.getContext(),false);
         LinearLayoutManager LLManager = new LinearLayoutManager(this.getContext());
         LLManager.setOrientation(LinearLayoutManager.VERTICAL);
         this.order_list_rv.setLayoutManager(LLManager);

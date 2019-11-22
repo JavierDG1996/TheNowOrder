@@ -75,9 +75,9 @@ public class SummaryProductAdapter extends RecyclerView.Adapter<SummaryProductAd
             public MyViewHolder(View view){
                 super(view);
 
-                product_name = (TextView) view.findViewById(R.id.product_name);
-                product_price = (TextView) view.findViewById(R.id.product_price);
-                product_description = (LinearLayout) view.findViewById(R.id.LinearLayout_product_list_new_order_id);
+                product_name = view.findViewById(R.id.product_name);
+                product_price = view.findViewById(R.id.product_price);
+                product_description = view.findViewById(R.id.LinearLayout_product_list_new_order_id);
 
             }
         }
