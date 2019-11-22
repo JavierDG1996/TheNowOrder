@@ -93,7 +93,7 @@ public class SummaryOrderActivity extends AppCompatActivity {
     public void loadView(){
         this.order_products = findViewById(R.id.order_summary_products);
         add_new_product = this.findViewById(R.id.add_new_product);
-        SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this,this.order.getProduct_list());
+        SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this,this.order.getProduct_list(), this.order);
         LinearLayoutManager LLManager = new LinearLayoutManager(this);
         LLManager.setOrientation(LinearLayoutManager.VERTICAL);
         this.order_products.setLayoutManager(LLManager);
