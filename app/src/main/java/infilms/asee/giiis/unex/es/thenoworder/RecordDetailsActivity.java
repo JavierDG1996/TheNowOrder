@@ -42,7 +42,7 @@ public class RecordDetailsActivity extends AppCompatActivity {
         this.delete_record =(Button) findViewById(R.id.delete_record_button);
 
         this.record_product_list = (RecyclerView) findViewById(R.id.rv_record_product_list);
-        SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this,this.order.getProduct_list(), this.order);
+        SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this,this.order.getProduct_list(), this.order,false);
         LinearLayoutManager LLManager = new LinearLayoutManager(this);
         LLManager.setOrientation(LinearLayoutManager.VERTICAL);
         this.record_product_list.setLayoutManager(LLManager);
