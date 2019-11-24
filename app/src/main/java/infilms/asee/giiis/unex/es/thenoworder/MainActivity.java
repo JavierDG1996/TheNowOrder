@@ -1,19 +1,20 @@
 package infilms.asee.giiis.unex.es.thenoworder;
 
 import android.content.Intent;
+
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
+
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+
 import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -25,12 +26,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import infilms.asee.giiis.unex.es.thenoworder.ui.home.HomeFragment;
+
+
 
 import android.view.Menu;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -39,8 +41,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //set preferences default values
+        PreferenceManager.setDefaultValues(this,R.xml.preferences,false);
+
+
 
 
 
@@ -51,14 +59,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
-
-
-   /* private void loadDefaultFragment() {
-        //Carga fragment por defecto
-        //FragmentManager fragmentManager = getSupportFragmentManager();
-        //fragmentManager.beginTransaction().replace(R.id.mainActivityContent, new HomeFragment()).commit();
-    }*/
 
     public void manageNavigationDrawer(){
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -86,27 +86,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 switch(menuItem.getItemId()){
 
                     case R.id.nav_home:
-                        Toast.makeText(getApplicationContext(),"Home is selected", Toast.LENGTH_SHORT).show();
                         navController.navigate(R.id.nav_home);
                         break;
                     case R.id.nav_gallery:
-                        Toast.makeText(getApplicationContext(),"Record is selected", Toast.LENGTH_SHORT).show();
                         navController.navigate(R.id.nav_gallery);
                         break;
                     case R.id.nav_slideshow:
-                        Toast.makeText(getApplicationContext(),"Slideshow is selected", Toast.LENGTH_SHORT).show();
                         navController.navigate(R.id.nav_slideshow);
                         break;
                     case R.id.nav_tools:
-                        Toast.makeText(getApplicationContext(),"Settings is selected", Toast.LENGTH_SHORT).show();
                         navController.navigate(R.id.nav_tools);
                         break;
                     case R.id.nav_share:
-                        Toast.makeText(getApplicationContext(),"Share is selected", Toast.LENGTH_SHORT).show();
                         navController.navigate(R.id.nav_share);
                         break;
                     case R.id.nav_send:
-                        Toast.makeText(getApplicationContext(),"Send is selected", Toast.LENGTH_SHORT).show();
                         navController.navigate(R.id.nav_send);
                         break;
 
@@ -115,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 menuItem.setChecked(true);
                 drawer.closeDrawer(GravityCompat.START);
-                //drawer.closeDrawers();
 
 
                 return true;
@@ -139,6 +132,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent intent = new Intent(this,SettingsActivity.class);
+            startActivity(intent);
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
