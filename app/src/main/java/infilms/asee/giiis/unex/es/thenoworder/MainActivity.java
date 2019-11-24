@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         navController.navigate(R.id.nav_home);
                         break;
                     case R.id.nav_gallery:
-                        Toast.makeText(getApplicationContext(),"Gallery is selected", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Record is selected", Toast.LENGTH_SHORT).show();
                         navController.navigate(R.id.nav_gallery);
                         break;
                     case R.id.nav_slideshow:
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         navController.navigate(R.id.nav_slideshow);
                         break;
                     case R.id.nav_tools:
-                        Toast.makeText(getApplicationContext(),"Tools is selected", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Settings is selected", Toast.LENGTH_SHORT).show();
                         navController.navigate(R.id.nav_tools);
                         break;
                     case R.id.nav_share:

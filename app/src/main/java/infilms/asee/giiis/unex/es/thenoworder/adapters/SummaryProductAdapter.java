@@ -23,13 +23,15 @@ public class SummaryProductAdapter extends RecyclerView.Adapter<SummaryProductAd
 
         private Context mContext;
         private List<Product> product_list;
-        private Order order;
+        private Order order;//Este atributo es utilizado cuando se vaya a borrar un producto
+        private boolean CanIInteract;
 
 
-    public SummaryProductAdapter(Context mContext, List<Product> product_list, Order order) {
+    public SummaryProductAdapter(Context mContext, List<Product> product_list, Order order, boolean CanIInteract) {
         this.mContext = mContext;
         this.product_list = product_list;
         this.order = order;
+        this.CanIInteract = CanIInteract;
     }
 
         @NonNull
@@ -48,13 +50,15 @@ public class SummaryProductAdapter extends RecyclerView.Adapter<SummaryProductAd
         holder.product_name.setText(product_list.get(position).getProduct_name());
         holder.product_price.setText(String.valueOf(product_list.get(position).getProduct_price()));
 
-        holder.product_description.setOnClickListener(new View.OnClickListener() {
+        if(CanIInteract) {
+            holder.product_description.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   showDeleteTakeDialog(product_list.get(position).getProduct_name(), position);
+                    showDeleteTakeDialog(product_list.get(position).getProduct_name(), position);
 
                 }
             });
+        }
 
 
     }
