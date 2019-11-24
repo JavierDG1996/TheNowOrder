@@ -1,6 +1,7 @@
 package infilms.asee.giiis.unex.es.thenoworder;
 
 import android.content.Intent;
+
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
@@ -9,6 +10,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
+
+
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +24,7 @@ import infilms.asee.giiis.unex.es.thenoworder.API.NetworkingAndroidHttpClientJSO
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
 import infilms.asee.giiis.unex.es.thenoworder.ui.main.SectionsPagerAdapter;
+
 
 public class NewOrderTabbedActivity extends AppCompatActivity {
 
@@ -41,6 +45,7 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         api= new NetworkingAndroidHttpClientJSON(this);
         setContentView(R.layout.activity_new_order_tabbed);

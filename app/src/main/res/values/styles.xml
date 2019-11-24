@@ -1,11 +1,28 @@
 <resources>
 
     <!-- Base application theme. -->
+    <!-- Light/Day mode theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="backgroundcolor">@color/colorBackground</item>
+        <item name="textcolor">@color/colorText</item>
+        <item name="tintcolor">@color/colorTint</item>
+        <item name="buttoncolor">@color/colorButton</item>
+    </style>
+
+    <!-- Light/Day mode theme. -->
+    <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/Dark_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/Dark_colorPrimaryDark</item>
+        <item name="colorAccent">@color/Dark_colorAccent</item>
+        <item name="backgroundcolor">@color/Dark_colorBackground</item>
+        <item name="textcolor">@color/Dark_colorText</item>
+        <item name="tintcolor">@color/Dark_colorTint</item>
+        <item name="buttoncolor">@color/Dark_colorButton</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

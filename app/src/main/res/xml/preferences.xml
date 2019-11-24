@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content">
+
+
+    <EditTextPreference
+        android:inputType="number"
+        android:defaultValue="9"
+        android:textColor="?attr/textcolor"
+        android:key="pref_tables"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/total_num_tables" />
+
+
+</PreferenceScreen>

@@ -2,7 +2,7 @@ package infilms.asee.giiis.unex.es.thenoworder.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +13,12 @@ import android.widget.TextView;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import infilms.asee.giiis.unex.es.thenoworder.MainActivity;
 import infilms.asee.giiis.unex.es.thenoworder.PayBillActivity;
 import infilms.asee.giiis.unex.es.thenoworder.R;
 import infilms.asee.giiis.unex.es.thenoworder.RecordDetailsActivity;
 import infilms.asee.giiis.unex.es.thenoworder.SummaryOrderActivity;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
-import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.AppDatabase;
-import infilms.asee.giiis.unex.es.thenoworder.ui.home.HomeFragment;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
 
@@ -56,9 +52,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         holder.order_price.setText(String.valueOf(this.orderList.get(position).getTotal_price()));
         holder.order_table.setText(String.valueOf(this.orderList.get(position).getTable()));
 
-        //holder.order_description.removeAllViews();
-        //holder.order_description.addView(holder.order_price);
-        //holder.order_description.addView(holder.order_table);
+
         if(!IsPaidOrders) {
             holder.pay_order.setOnClickListener(new View.OnClickListener() {
                 @Override

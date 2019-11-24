@@ -15,7 +15,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import infilms.asee.giiis.unex.es.thenoworder.MainActivity;
 import infilms.asee.giiis.unex.es.thenoworder.NewOrderTabbedActivity;
 import infilms.asee.giiis.unex.es.thenoworder.R;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Table;

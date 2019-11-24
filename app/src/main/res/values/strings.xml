@@ -42,10 +42,14 @@
 
     <string name="modoNoche">Modo Noche</string>
     <string name="modoNocheSummary">Activa el modo noche</string>
+    <string name="modoDiaSummary">Desactiva el modo noche</string>
+    <string name="total_num_tables">Numero de mesas</string>
+
     <string name="delete_product_question">Eliminar de la orden el producto</string>
     <string name="delete">Eliminar</string>
     <string name="cancel">Cancelar</string>
     <string name="record_order">Consultar historial</string>
     <string name="record_order_activity">Historial de pedido</string>
     <string name="delete_order">Borrar pedido</string>
+    <string name="settings">Ajustes</string>
 </resources>

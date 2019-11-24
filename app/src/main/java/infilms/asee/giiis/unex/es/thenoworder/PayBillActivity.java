@@ -8,9 +8,12 @@ import infilms.asee.giiis.unex.es.thenoworder.adapters.SummaryProductAdapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.AppDatabase;
 
+
 import android.content.Intent;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -29,6 +32,8 @@ public class PayBillActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_bill);
 
@@ -114,7 +119,6 @@ public class PayBillActivity extends AppCompatActivity {
             public void onClick(View view) {
                 order.setPaid_order(true);
                 new updateOrder().execute(order);
-                //finish();
                 finishAffinity(); //Este método finaliza la actividad, así como todas las actividades debajo de ella en la tarea actual que tengan la misma afinidad.
                 Intent intent = new Intent(view.getContext(), MainActivity.class);
                 startActivity(intent);
