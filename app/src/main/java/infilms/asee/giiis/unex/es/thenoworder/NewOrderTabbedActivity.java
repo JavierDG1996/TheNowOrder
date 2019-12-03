@@ -32,10 +32,6 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
 
-    private List<Product> drinks;
-    private List<Product> foods;
-    private List<Product> desserts;
-
     private ArrayList<Product> product_order;
     private Order newOrder;
     private int table_number;
@@ -45,9 +41,7 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        api= new NetworkingAndroidHttpClientJSON(this);
         setContentView(R.layout.activity_new_order_tabbed);
         getIntentData();
         init();
@@ -73,7 +67,7 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
     }
 
     public void init(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -97,10 +91,7 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
     public void manageTabs(){
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        this.drinks = new ArrayList<>();
-        this.foods = new ArrayList<>();
-        this.desserts = new ArrayList<>();
-        mSectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager(),drinks,foods,desserts);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
 
         mViewPager = findViewById(R.id.container);
         mViewPager.setOffscreenPageLimit(2);
@@ -110,21 +101,6 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(mViewPager);
     }
-
-    public void loadList(int numTab){
-        switch (numTab){
-            case 0:
-                mSectionsPagerAdapter.UpdateFragmentDrink(api.getListDrinks());
-                break;
-            case 1:
-                mSectionsPagerAdapter.UpdateFragmentFood(api.getProduct_list());
-                break;
-            case 2:
-                mSectionsPagerAdapter.UpdateFragmentDessert(api.getListDessert());
-                break;
-        }
-    }
-
 
     @Override
     public void onBackPressed(){
@@ -174,6 +150,5 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 
 }

@@ -13,70 +13,89 @@ import java.util.List;
 import java.net.URL;
 import java.util.Random;
 
-import infilms.asee.giiis.unex.es.thenoworder.NewOrderTabbedActivity;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
+import infilms.asee.giiis.unex.es.thenoworder.classes.ProductList;
 
 
 public class NetworkingAndroidHttpClientJSON {
 
-    private List<Product> product_list;
-    private List<Product> listDessert;
-    private List<Product> listDrinks;
-    public NewOrderTabbedActivity newOrder;
+    private ProductList foodList;
+    private ProductList drinkList;
+    private ProductList dessertList;
 
-    public NetworkingAndroidHttpClientJSON(NewOrderTabbedActivity newOrder) {
+    /*
+    * public builder
+    * Initialize product lists
+    * Make asynchronous calls to APIS
+    */
+    public NetworkingAndroidHttpClientJSON() {
+        foodList=new ProductList();
+        drinkList=new ProductList();
+        dessertList=new ProductList();
+
         new HttpGetTaskDrink().execute();
         new HttpGetTaskFood().execute();
         new HttpGetTaskDessert().execute();
-        this.newOrder = newOrder;
     }
 
-    public List<Product> getProduct_list() {
-        return product_list;
+    /*
+     * GET the foods list
+     *
+     * @return List containing all the foods
+     */
+    public ProductList getFood_list() {
+        return foodList;
     }
 
-    public void setProduct_list(List<Product> product_list) {
-        this.product_list = new ArrayList<>();
-        this.product_list = product_list;
+    /*
+     * GET the desserts list
+     *
+     * @return List containing all the desserts
+     */
+    public ProductList getListDessert() {
+        return dessertList;
     }
 
-    public List<Product> getListDessert() {
-        return listDessert;
+    /*
+     * GET the drinks list
+     *
+     * @return List containing all the drinks
+     */
+    public ProductList getListDrinks() {
+        return drinkList;
     }
 
-    public void setListDessert(List<Product> listDessert) {
-        this.listDessert = new ArrayList<>();
-        this.listDessert = listDessert;
-    }
-
-    public List<Product> getListDrinks() {
-        return listDrinks;
-    }
-
-    public void setListDrinks(List<Product> listDrinks) {
-        this.listDrinks = new ArrayList<>();
-        this.listDrinks = listDrinks;
-    }
-
+    /*
+    * API asynchronous call to get the food list
+    */
     class HttpGetTaskFood extends AsyncTask<Void, Void, List<Product>> {
         private static final String BASE_URL = "api.spoonacular.com";
         private static final String JSON_SEG = "recipes";
         private static final String JSON_SEG2 = "random";
         private static final String Number = "number";
         private static final String apiKey = "apiKey";
-        //private static final String apiKeyValue = "f3bba258c5414ebc9083b7241491d522";
-        private static final String apiKeyValue = "c6d8b6b3b2854d55af9d8154311ebaa5";
+        private static final String apiKeyValue = "f3bba258c5414ebc9083b7241491d522";
+        private static final String apiKeyValueAux = "c6d8b6b3b2854d55af9d8154311ebaa5";
+
+        private URL getURL(String connectionApiKey){
+          return NetworkUtils.buildURL(BASE_URL,
+                    new String[]{JSON_SEG, JSON_SEG2},
+                    new Pair(Number, "5"),
+                    new Pair(apiKey, connectionApiKey));
+        }
 
         @Override
         protected List<Product> doInBackground(Void... params) {
             URL queryURL;
             JSONObject result;
 
-            queryURL = NetworkUtils.buildURL(BASE_URL,
-                    new String[]{JSON_SEG, JSON_SEG2},
-                    new Pair(Number, "5"),
-                    new Pair(apiKey, apiKeyValue));
+            queryURL=getURL(apiKeyValue);
             result = NetworkUtils.getJSONResponse(queryURL);
+
+            if(result == null){
+                queryURL=getURL(apiKeyValueAux);
+                result = NetworkUtils.getJSONResponse(queryURL);
+            }
 
             if (result != null) {
                 //Log.v("Lista de Recetas", "Getting response from the API");
@@ -88,8 +107,7 @@ public class NetworkingAndroidHttpClientJSON {
         @Override
         protected void onPostExecute(List<Product> FoodList) {
             super.onPostExecute(FoodList);
-            setProduct_list(FoodList);
-            newOrder.loadList(1);
+            foodList.addAll(FoodList);
             for (Product e : FoodList) {
                 Log.v("Lista de comidas", "API: " + e.getProduct_name());
             }
@@ -127,29 +145,39 @@ public class NetworkingAndroidHttpClientJSON {
         }
     }
 
-
+    /*
+     * API asynchronous call to get the dessert list
+     */
     class HttpGetTaskDessert extends AsyncTask<Void, Void, List<Product>> {
         private static final String BASE_URL = "api.spoonacular.com";
         private static final String JSON_SEG = "recipes";
         private static final String JSON_SEG2 = "random";
         private static final String Number = "number";
         private static final String apiKey = "apiKey";
-        //private static final String apiKeyValue = "f3bba258c5414ebc9083b7241491d522";
-        private static final String apiKeyValue = "c6d8b6b3b2854d55af9d8154311ebaa5";
+        private static final String apiKeyValue = "f3bba258c5414ebc9083b7241491d522";
+        private static final String apiKeyValueAux = "c6d8b6b3b2854d55af9d8154311ebaa5";
         private static final String tipo = "type";
         private static final String postre = "dessert";
+
+        private URL getURL(String connectionApiKey){
+            return NetworkUtils.buildURL(BASE_URL,
+                    new String[]{JSON_SEG, JSON_SEG2},
+                    new Pair(Number, "5"),
+                    new Pair(apiKey, connectionApiKey));
+        }
 
         @Override
         protected List<Product> doInBackground(Void... params) {
             URL queryURL;
             JSONObject result;
 
-            queryURL = NetworkUtils.buildURL(BASE_URL,
-                    new String[]{JSON_SEG, JSON_SEG2},
-                    new Pair(tipo, postre),
-                    new Pair(Number, "5"),
-                    new Pair(apiKey, apiKeyValue));
+            queryURL=getURL(apiKeyValue);
             result = NetworkUtils.getJSONResponse(queryURL);
+
+            if(result == null){
+                queryURL=getURL(apiKeyValueAux);
+                result = NetworkUtils.getJSONResponse(queryURL);
+            }
 
             if (result != null) {
                 //Log.v("Lista de Postres", "Getting response from the API");
@@ -161,8 +189,7 @@ public class NetworkingAndroidHttpClientJSON {
         @Override
         protected void onPostExecute(List<Product> DessertList) {
             super.onPostExecute(DessertList);
-            setListDessert(DessertList);
-            newOrder.loadList(2);
+            dessertList.addAll(DessertList);
             for (Product e : DessertList) {
                 Log.v("Lista de postres", "API: " + e.getProduct_name());
             }
@@ -200,7 +227,9 @@ public class NetworkingAndroidHttpClientJSON {
         }
     }
 
-
+    /*
+     * API asynchronous call to get the drink list
+     */
     class HttpGetTaskDrink extends AsyncTask<Void, Void, List<Product>> {
         private static final String BASE_URLdrink = "www.thecocktaildb.com";
         private static final String path = "api";
@@ -230,8 +259,7 @@ public class NetworkingAndroidHttpClientJSON {
         @Override
         protected void onPostExecute(List<Product> DrinksList) {
             super.onPostExecute(DrinksList);
-            setListDrinks(DrinksList);
-            newOrder.loadList(0);
+            drinkList.addAll(DrinksList);
             for (Product e : DrinksList) {
                 Log.v("Lista de bebidas", "API: " + e.getProduct_name());
             }
