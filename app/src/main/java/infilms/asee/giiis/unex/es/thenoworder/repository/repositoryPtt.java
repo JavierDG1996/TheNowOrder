@@ -1,16 +1,28 @@
 package infilms.asee.giiis.unex.es.thenoworder.repository;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import infilms.asee.giiis.unex.es.thenoworder.API.NetworkingAndroidHttpClientJSON;
+import infilms.asee.giiis.unex.es.thenoworder.Executors.AppExecutors;
+import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
+import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.OrderDao;
+import infilms.asee.giiis.unex.es.thenoworder.ui.settings.SettingsFragment;
 
 public class repositoryPtt {
+    private static final Object LOCK = new Object();
     private static repositoryPtt instance;
+
+    private final OrderDao mOrderDao;
+    private final AppExecutors mAppExecutors;
 
     private static final String LOAD_FoodList = "FoodList";
     private static final String LOAD_DrinkList = "DrinkList";
@@ -23,8 +35,10 @@ public class repositoryPtt {
      *
      * @param c Activity context from where we are instantiating the repository
      */
-    private repositoryPtt(Context c){
+    private repositoryPtt(Context c, OrderDao mOrderDao, AppExecutors mAppExecutors){
         api= new NetworkingAndroidHttpClientJSON();
+        this.mOrderDao = mOrderDao;
+        this.mAppExecutors = mAppExecutors;
     }
 
     /**
@@ -33,9 +47,11 @@ public class repositoryPtt {
      * @param c Activity context from where we are instantiating the repository
      * @return Instance of repository
      */
-    public static repositoryPtt getInstance(Context c){
+    public static repositoryPtt getInstance(Context c, OrderDao mOrderDao, AppExecutors mAppExecutors){
         if(instance == null){
-            instance= new repositoryPtt(c.getApplicationContext());
+            synchronized (LOCK) {
+                instance = new repositoryPtt(c.getApplicationContext(), mOrderDao, mAppExecutors);
+            }
         }
         return instance;
     }
@@ -96,4 +112,44 @@ public class repositoryPtt {
         }
         return desserts;
     }
+
+    /**
+     * Preference operation
+     * @param context
+     * @return number of tables
+     */
+
+    public LiveData<Integer> getTables(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String mesas_string = sharedPreferences.getString(SettingsFragment.KEY_PREF_MESA,"0");
+
+        MutableLiveData<Integer> mesas = new MutableLiveData<>();
+        mesas.setValue(Integer.parseInt(mesas_string));
+
+        return mesas;
+    }
+
+
+    /**
+     * Database related operations
+     **/
+
+    public LiveData<List<Order>> getAllPendentOrders() {
+        //initializeData();
+        return mOrderDao.getAllPendentOrders();
+    }
+
+    public LiveData<List<Order>> getAllPaidOrders() {
+        //initializeData();
+        return mOrderDao.getAllPaidOrders();
+    }
+
+    public void deleteOrder(Order order){
+        mAppExecutors.getDiskIO().execute(()->{
+            mOrderDao.deleteOrder(order);
+        });
+    }
+
+
+
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import infilms.asee.giiis.unex.es.thenoworder.PayBillActivity;
 import infilms.asee.giiis.unex.es.thenoworder.R;
@@ -89,8 +90,54 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
 
     }
 
+
+
+    public void swapOrderList(final List<Order> newOrderList) {
+        // If there was no forecast data, then recreate all of the list
+        if (orderList == null) {
+            orderList = newOrderList;
+            notifyDataSetChanged();
+        } else {
+            /*
+             * Otherwise we use DiffUtil to calculate the changes and update accordingly. This
+             * shows the four methods you need to override to return a DiffUtil callback. The
+             * old list is the current list stored in mForecast, where the new list is the new
+             * values passed in from the observing the database.
+             */
+
+            DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+                @Override
+                public int getOldListSize() {
+                    return orderList.size();
+                }
+
+                @Override
+                public int getNewListSize() {
+                    return newOrderList.size();
+                }
+
+                @Override
+                public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                    return orderList.get(oldItemPosition).getId_order() ==
+                            newOrderList.get(newItemPosition).getId_order();
+                }
+
+                @Override
+                public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                    Order newOrder = newOrderList.get(newItemPosition);
+                    Order oldOrder = orderList.get(oldItemPosition);
+                    return newOrder.getId_order() == oldOrder.getId_order()
+                            && newOrder.getTable() == oldOrder.getTable();
+                }
+            });
+            orderList = newOrderList;
+            result.dispatchUpdatesTo(this);
+        }
+    }
+
     @Override
     public int getItemCount() {
+        if(null == this.orderList) return 0;
         return this.orderList.size();
     }
 

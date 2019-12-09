@@ -9,6 +9,7 @@
     <color name="colorText">#000000</color>
     <color name="colorTint">#000000</color>
     <color name="colorButton">#8BC34A</color>
+    <color name="colorBackgroundProductList">#5900BCD4</color>
 
     <color name="Dark_colorPrimary">#333333</color>
     <color name="Dark_colorPrimaryDark">#404040</color>

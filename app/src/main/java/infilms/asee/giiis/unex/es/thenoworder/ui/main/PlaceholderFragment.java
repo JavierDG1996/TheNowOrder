@@ -22,6 +22,7 @@ import infilms.asee.giiis.unex.es.thenoworder.adapters.ProductAdapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
 import infilms.asee.giiis.unex.es.thenoworder.classes.ProductList;
 import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
+import infilms.asee.giiis.unex.es.thenoworder.utilities.InjectorUtils;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
@@ -62,7 +63,8 @@ public class PlaceholderFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_new_order_tabbed, container, false);
         this.product_list_rv = root.findViewById(R.id.rv_product_list_id);
 
-        r = repositoryPtt.getInstance(getContext());
+        r = InjectorUtils.provideRepository(getContext());
+        //r = repositoryPtt.getInstance(getContext());
 
         LinearLayoutManager LLManager = new LinearLayoutManager(this.getContext());
         LLManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -153,7 +155,8 @@ public class PlaceholderFragment extends Fragment {
         @Override
         protected ProductList doInBackground(Void... voids) {
             //Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND + THREAD_PRIORITY_MORE_FAVORABLE);
-            r = repositoryPtt.getInstance(getContext());
+            r = InjectorUtils.provideRepository(getContext());
+            //r = repositoryPtt.getInstance(getContext());
             return new ProductList(r.getFoodFromApi());
         }
 
@@ -177,7 +180,8 @@ public class PlaceholderFragment extends Fragment {
         @Override
         protected ProductList doInBackground(Void... voids) {
             //Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND + THREAD_PRIORITY_MORE_FAVORABLE);
-            r = repositoryPtt.getInstance(getContext());
+            r = InjectorUtils.provideRepository(getContext());
+            //r = repositoryPtt.getInstance(getContext());
             return new ProductList(r.getDrinkFromApi());
         }
 
@@ -202,7 +206,8 @@ public class PlaceholderFragment extends Fragment {
         @Override
         protected ProductList doInBackground(Void... voids) {
             //Process.setThreadPriority(THREAD_PRIORITY_BACKGROUND + THREAD_PRIORITY_MORE_FAVORABLE);
-            r = repositoryPtt.getInstance(getContext());
+            r = InjectorUtils.provideRepository(getContext());
+            //r = repositoryPtt.getInstance(getContext());
             return new ProductList(r.getDessertFromApi());
         }
 

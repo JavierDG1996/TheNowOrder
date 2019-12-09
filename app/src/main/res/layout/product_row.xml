@@ -33,7 +33,7 @@
             android:layout_weight="1"
             android:fontFamily="sans-serif-light"
             android:textAlignment="viewStart"
-            android:textColor="#00BCD4"
+            android:textColor="#2196F3"
             android:textSize="18sp" />
     </LinearLayout>
 

@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import infilms.asee.giiis.unex.es.thenoworder.adapters.SummaryProductAdapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
+import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
 import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.AppDatabase;
+import infilms.asee.giiis.unex.es.thenoworder.utilities.InjectorUtils;
 
 
 import android.content.Intent;
@@ -16,10 +18,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RecordDetailsActivity extends AppCompatActivity {
 
-    private TextView total_price, table;
+
+    private repositoryPtt mRepository;
+    private TextView total_price, table, id;
     private Button delete_record;
     private RecyclerView record_product_list;
     private Order order;
@@ -41,6 +46,10 @@ public class RecordDetailsActivity extends AppCompatActivity {
 
         this.table = (TextView) findViewById(R.id.record_table_tv);
         this.table.setText(String.valueOf(order.getTable()));
+
+        this.id = (TextView) findViewById(R.id.record_id_tv);
+        this.id.setText(String.valueOf(order.getId_order()));
+        Toast.makeText(this,"Id: "+order.getId_order(),Toast.LENGTH_SHORT).show();
 
 
         this.delete_record =(Button) findViewById(R.id.delete_record_button);
@@ -75,12 +84,14 @@ public class RecordDetailsActivity extends AppCompatActivity {
         this.delete_record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                order.setPaid_order(true);
-                new deleteOrder().execute(order);
-                //finish();
-                finishAffinity(); //Este método finaliza la actividad, así como todas las actividades debajo de ella en la tarea actual que tengan la misma afinidad.
-                Intent intent = new Intent(view.getContext(), MainActivity.class);
-                startActivity(intent);
+                //order.setPaid_order(true);
+                mRepository = InjectorUtils.provideRepository(view.getContext());
+                mRepository.deleteOrder(order);
+                //new deleteOrder().execute(order);
+                finish();
+                //finishAffinity(); //Este método finaliza la actividad, así como todas las actividades debajo de ella en la tarea actual que tengan la misma afinidad.
+                //Intent intent = new Intent(view.getContext(), MainActivity.class);
+                //startActivity(intent);
             }
         });
     }
@@ -97,7 +108,7 @@ public class RecordDetailsActivity extends AppCompatActivity {
     }
 
     /*3. Delete order*/
-    class deleteOrder extends AsyncTask<Order, Void, Long> {
+   /* class deleteOrder extends AsyncTask<Order, Void, Long> {
 
         @Override
         protected Long doInBackground(Order... orders) {
@@ -106,5 +117,5 @@ public class RecordDetailsActivity extends AppCompatActivity {
             long id = database.orderDao().deleteOrder(order);
             return id;
         }
-    }
+    }*/
 }

@@ -48,10 +48,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //set preferences default values
         PreferenceManager.setDefaultValues(this,R.xml.preferences,false);
 
-
-
-
-
         manageNavigationDrawer();
         manageFloatingButton();
 

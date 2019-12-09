@@ -21,9 +21,6 @@ public class Order implements Serializable {
     private Boolean paid_order;
 
     public Order(int table, ArrayList<Product> product_list){
-
-        /* TODO: delete asignation to identifier*/
-        this.id_order = 0;
         this.table = table;
         this.product_list = product_list;
 

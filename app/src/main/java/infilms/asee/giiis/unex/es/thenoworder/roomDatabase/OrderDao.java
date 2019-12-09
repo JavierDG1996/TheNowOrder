@@ -2,9 +2,11 @@ package infilms.asee.giiis.unex.es.thenoworder.roomDatabase;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
@@ -12,7 +14,7 @@ import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 @Dao
 public interface OrderDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public long addOrder(Order order);
 
     @Update
@@ -28,8 +30,8 @@ public interface OrderDao {
     public List<Order> getAllOrders();
 
     @Query("SELECT * FROM `Order` WHERE paid_order = '0'")
-    public List<Order> getAllPendentOrders();
+    public LiveData<List<Order>> getAllPendentOrders();
 
     @Query("SELECT * FROM `Order` WHERE paid_order = '1'")
-    public List<Order> getAllPaidOrders();
+    public LiveData<List<Order>> getAllPaidOrders();
 }
