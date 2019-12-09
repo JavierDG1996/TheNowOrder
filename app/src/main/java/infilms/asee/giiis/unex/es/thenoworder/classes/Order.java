@@ -25,14 +25,11 @@ public class Order implements Serializable {
         this.product_list = product_list;
 
         this.paid_order = false;
-        this.total_price = calculateTotalPrice();
+        this.total_price = 0;
     }
 
-    public void updatePrice(){
-        this.total_price = calculateTotalPrice();
-    }
 
-    private float calculateTotalPrice() {
+    public void calculateTotalPrice() {
         this.total_price = 0;
 
         for(Product product : this.product_list){
@@ -43,7 +40,6 @@ public class Order implements Serializable {
         bd = bd.setScale(2, RoundingMode.HALF_UP);
         this.total_price = bd.floatValue();
 
-        return this.total_price;
     }
 
     public long getId_order() {

@@ -34,6 +34,7 @@
     <string name="intentIsInsert">IS_INSERT_INTENT</string>
     <string name="update_order">Actualizar pedido</string>
     <string name="intentProducts">INTENT_PRODUCT_LIST</string>
+    <string name="product_chart">Carta de productos</string>
     <string name="pay_bill">Pagar</string>
     <string name="msg_cash">0.00</string>
     <string name="msg_bill">Coloque cantidad en efectivo</string>

@@ -70,7 +70,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, SummaryOrderActivity.class);
-                    intent.putExtra(context.getString(R.string.intentOrder), orderList.get(position));
+                    intent.putExtra(context.getString(R.string.intentOrder), orderList.get(position).getId_order());
                     intent.putExtra(context.getString(R.string.intentIsInsert), false);
 
                     context.startActivity(intent);

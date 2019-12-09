@@ -17,6 +17,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import infilms.asee.giiis.unex.es.thenoworder.NewOrderTabbedActivity;
 import infilms.asee.giiis.unex.es.thenoworder.R;
+import infilms.asee.giiis.unex.es.thenoworder.SummaryOrderActivity;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Table;
 
 public class Table_List_Adapter extends RecyclerView.Adapter<Table_List_Adapter.MyViewHolder> {
@@ -53,8 +54,8 @@ public class Table_List_Adapter extends RecyclerView.Adapter<Table_List_Adapter.
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, NewOrderTabbedActivity.class);
-
+                //Intent intent = new Intent(mContext, NewOrderTabbedActivity.class);
+                Intent intent = new Intent(mContext, SummaryOrderActivity.class);
                 intent.putExtra(mContext.getString(R.string.intentNumTable), table_list.get(position).getNumber());
                 mContext.startActivity(intent);
             }

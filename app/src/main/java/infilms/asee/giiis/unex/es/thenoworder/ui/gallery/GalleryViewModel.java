@@ -10,14 +10,11 @@ import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
 
 public class GalleryViewModel extends ViewModel {
 
-    //private MutableLiveData<String> mText;
     private final repositoryPtt mRepository;
     private final LiveData<List<Order>> PaidOrders;
 
     public GalleryViewModel(repositoryPtt repository) {
         this.mRepository = repository;
-        //mText = new MutableLiveData<>();
-        //mText.setValue("This is gallery fragment");
         PaidOrders = mRepository.getAllPaidOrders();
     }
 

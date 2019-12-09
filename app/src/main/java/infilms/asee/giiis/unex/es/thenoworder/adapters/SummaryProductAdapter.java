@@ -65,7 +65,8 @@ public class SummaryProductAdapter extends RecyclerView.Adapter<SummaryProductAd
 
         @Override
         public int getItemCount() {
-        return product_list.size();
+            if(null == this.product_list) return 0;
+            return product_list.size();
     }
 
         public static class  MyViewHolder extends RecyclerView.ViewHolder{//Los adaptadores de Recycler view deben contener una clase que extienda de viewHolder
@@ -94,7 +95,7 @@ public class SummaryProductAdapter extends RecyclerView.Adapter<SummaryProductAd
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     product_list.remove(position);
-                    order.updatePrice();
+                    order.calculateTotalPrice();
                     notifyDataSetChanged();
                 }
             }).setNegativeButton(mContext.getString(R.string.cancel), new DialogInterface.OnClickListener() {

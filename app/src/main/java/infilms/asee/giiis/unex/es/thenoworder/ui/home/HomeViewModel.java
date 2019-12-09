@@ -10,14 +10,11 @@ import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
 
 public class HomeViewModel extends ViewModel {
 
-    //private MutableLiveData<String> mText;
     private final repositoryPtt mRepository;
     private final LiveData<List<Order>> PendentOrders;
 
     public HomeViewModel(repositoryPtt repository) {
         this.mRepository = repository;
-        //mText = new MutableLiveData<>();
-        //mText.setValue("This is home fragment");
         PendentOrders = mRepository.getAllPendentOrders();
     }
 

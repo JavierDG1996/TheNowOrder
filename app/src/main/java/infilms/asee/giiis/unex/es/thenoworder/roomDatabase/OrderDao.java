@@ -24,7 +24,7 @@ public interface OrderDao {
     public int deleteOrder(Order order);
 
     @Query("SELECT * FROM `Order` WHERE id_order = :order_id")
-    public Order getById(long order_id);
+    public LiveData<Order> getById(long order_id);
 
     @Query("SELECT * FROM `Order`")
     public List<Order> getAllOrders();

@@ -3,8 +3,11 @@ package infilms.asee.giiis.unex.es.thenoworder;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SummaryOrderViewModel;
+import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SummaryOrderViewModelFactory;
 import infilms.asee.giiis.unex.es.thenoworder.adapters.SummaryProductAdapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
@@ -22,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -32,11 +36,13 @@ public class SummaryOrderActivity extends AppCompatActivity {
 
     private repositoryPtt mRepository;
     private static final int ADD_PRODUCT_ORDER = 0;
+    private long id;
     private Order order;
     private RecyclerView order_products;
     private FloatingActionButton add_new_product;
-
     private Boolean insert;
+
+    private SummaryOrderViewModel summaryOrderViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,76 @@ public class SummaryOrderActivity extends AppCompatActivity {
         manageButtons();
     }
 
+    public void getIntents(){
+        //intent captation order
+        Intent intent = getIntent();
+        this.insert = intent.getBooleanExtra(getString(R.string.intentIsInsert), true);
+        if(this.insert){
+            ArrayList<Product> product_order = new ArrayList<>();
+            int table_number= getIntent().getIntExtra(getString(R.string.intentNumTable),0);
+            Toast.makeText(this,"Recibido mesa "+table_number,Toast.LENGTH_SHORT).show();
+            order = new Order(table_number, product_order);
+        }else{
+            this.id = intent.getLongExtra(getString(R.string.intentOrder),0);
+            //order = (Order) intent.getSerializableExtra(getString(R.string.intentOrder));
+        }
+
+    }
+
+    public void init(){
+        ActionBar actionBar = getSupportActionBar();
+        if(this.insert){
+            actionBar.setTitle(getResources().getString(R.string.create_order));
+        }else{
+            actionBar.setTitle(getResources().getString(R.string.update_order));
+        }
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+    }
+
+    public void loadView(){
+        this.mRepository = InjectorUtils.provideRepository(this);
+        this.order_products = findViewById(R.id.order_summary_products);
+        add_new_product = this.findViewById(R.id.add_new_product);
+
+
+        if(this.insert){
+
+            //Si se está insertando el pedido utiliza el pedido que se ha creado en el momento
+            SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this, this.order.getProduct_list(), this.order, true);
+            LinearLayoutManager LLManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+            this.order_products.setLayoutManager(LLManager);
+            /*
+             * Use this setting to improve performance if you know that changes in content do not
+             * change the child layout size in the RecyclerView
+             */
+            this.order_products.setHasFixedSize(true);
+            this.order_products.setAdapter(SP_adapter);
+
+        }else{
+
+            //Si se está actualizando el pedido se debe recuperar utilizando el identificador del pedido
+            SummaryOrderViewModelFactory factory = InjectorUtils.provideSummartOrderViewModelFactory(this,id);
+            this.summaryOrderViewModel = ViewModelProviders.of(this,factory).get(SummaryOrderViewModel.class);
+
+            this.summaryOrderViewModel.getOrder().observe(this,newOrder->{
+                this.order = newOrder;
+                SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this, this.order.getProduct_list(), this.order, true);
+                LinearLayoutManager LLManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+                this.order_products.setLayoutManager(LLManager);
+                /*
+                 * Use this setting to improve performance if you know that changes in content do not
+                 * change the child layout size in the RecyclerView
+                 */
+                this.order_products.setHasFixedSize(true);
+                this.order_products.setAdapter(SP_adapter);
+            });
+
+
+        }
+    }
+
     private void manageButtons() {
 
         this.add_new_product.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +133,6 @@ public class SummaryOrderActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), NewOrderTabbedActivity.class);
                 intent.putExtra(getString(R.string.intentProducts), order.getProduct_list());
-                intent.putExtra(getString(R.string.intentIsInsert), false);
                 startActivityForResult(intent, ADD_PRODUCT_ORDER);
             }
         });
@@ -78,47 +153,9 @@ public class SummaryOrderActivity extends AppCompatActivity {
         }
     }
 
-    public void init(){
-        ActionBar actionBar = getSupportActionBar();
-        if(this.insert){
-            actionBar.setTitle(getResources().getString(R.string.create_order));
-        }else{
-            actionBar.setTitle(getResources().getString(R.string.update_order));
-        }
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-    }
-
-    public void getIntents(){
-        //intent captation order
-        Intent intent = getIntent();
-        order = (Order) intent.getSerializableExtra(getString(R.string.intentOrder));
-        this.insert = intent.getBooleanExtra(getString(R.string.intentIsInsert), true);
-    }
-
-    public void loadView(){
-        this.mRepository = InjectorUtils.provideRepository(this);
-        this.order_products = findViewById(R.id.order_summary_products);
-        add_new_product = this.findViewById(R.id.add_new_product);
-        SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this,this.order.getProduct_list(), this.order,true);
-        LinearLayoutManager LLManager = new LinearLayoutManager(this);
-        LLManager.setOrientation(LinearLayoutManager.VERTICAL);
-        this.order_products.setLayoutManager(LLManager);
-        this.order_products.setAdapter(SP_adapter);
-
-        if(this.insert){
-            this.add_new_product.hide();
-        }else{
-            this.add_new_product.show();
-        }
-    }
 
 
-    private void insertOrder(){
-        mRepository.addOrder(this.order);
-        //new createOrder().execute(this.order);
-    }
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -147,13 +184,15 @@ public class SummaryOrderActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.add_order) {
+            this.order.calculateTotalPrice();
+            Toast.makeText(this,"Numero productos "+this.order_products.getAdapter().getItemCount(),Toast.LENGTH_SHORT).show();
             if(this.insert){
-                insertOrder();
+                mRepository.addOrder(this.order);
                 finishAffinity(); //Este método finaliza la actividad, así como todas las actividades debajo de ella en la tarea actual que tengan la misma afinidad.
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }else{
-                updateOrder();
+                mRepository.updateOrder(this.order);
                 finish();
             }
 
@@ -162,42 +201,5 @@ public class SummaryOrderActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    private void updateOrder() {
-        //try {
-            this.order.updatePrice();
-            mRepository.updateOrder(this.order);
-            //Log.w("updating...", "-> "+new updateOrder().execute(this.order).get());
-       /*} catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-    }
-
-    /** ASYNC TASKS **/
-    /*1. Create new order*/
-    /*class createOrder extends AsyncTask<Order, Void, Long> {
-
-        @Override
-        protected Long doInBackground(Order... orders) {
-            AppDatabase database = AppDatabase.getDatabase(SummaryOrderActivity.this);
-
-            long id = database.orderDao().addOrder(order);
-            return id;
-        }
-    }*/
-
-    /*2. Update order*/
-    /*class updateOrder extends AsyncTask<Order, Void, Long> {
-
-        @Override
-        protected Long doInBackground(Order... orders) {
-            AppDatabase database = AppDatabase.getDatabase(SummaryOrderActivity.this);
-
-            long id = database.orderDao().updateOrder(order);
-            return id;
-        }
-    }*/
 
 }

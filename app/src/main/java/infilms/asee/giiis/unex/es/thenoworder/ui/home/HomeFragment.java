@@ -35,31 +35,14 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
 
-    /* View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
-    }*/
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState){
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        //loadOrders();
-
         this.order_list_rv = root.findViewById(R.id.rv_order_list_id);
         OrderAdapter O_adapter = new OrderAdapter(this.orderList,this.getContext(),false);
         LinearLayoutManager LLManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL,false);
-        //LLManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         this.order_list_rv.setLayoutManager(LLManager);
         /*
@@ -83,28 +66,5 @@ public class HomeFragment extends Fragment {
 
         return root;
     }
-
-
-    /*public void loadOrders(){
-        try {
-            this.orderList = new getAllOrders().execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }*/
-
-    /** ASYNC TASKS **/
-    /*1. Get All orders*/
-    /*class getAllOrders extends AsyncTask<Void, Void, List<Order>> {
-
-        @Override
-        protected List<Order> doInBackground(Void... voids) {
-            AppDatabase database = AppDatabase.getDatabase(getActivity());
-            List<Order> items = database.orderDao().getAllPendentOrders();
-            return items;
-        }
-    }*/
 
 }

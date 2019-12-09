@@ -144,6 +144,11 @@ public class repositoryPtt {
         return mOrderDao.getAllPaidOrders();
     }
 
+    public LiveData<Order> getOrderById(long order_id) {
+        //initializeData();
+        return mOrderDao.getById(order_id);
+    }
+
     public void deleteOrder(Order order){
         mAppExecutors.getDiskIO().execute(()->{
             mOrderDao.deleteOrder(order);

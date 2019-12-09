@@ -33,10 +33,7 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
     private ArrayList<Product> product_order;
-    private Order newOrder;
-    private int table_number;
 
-    private Boolean isNewOrder;
     NetworkingAndroidHttpClientJSON api;
 
     @Override
@@ -55,15 +52,7 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
     }
 
     public void getIntentData(){
-
-        this.isNewOrder = getIntent().getBooleanExtra(getString(R.string.intentIsInsert), true);
-        if(!this.isNewOrder){
-            this.product_order = new ArrayList<>((ArrayList<Product>) getIntent().getSerializableExtra(getString(R.string.intentProducts)));
-        }else{
-            this.product_order = new ArrayList<>();
-            table_number = getIntent().getIntExtra(getString(R.string.intentNumTable),0);
-            Toast.makeText(this,"Recibido mesa "+table_number,Toast.LENGTH_SHORT).show();
-        }
+        this.product_order = new ArrayList<>((ArrayList<Product>) getIntent().getSerializableExtra(getString(R.string.intentProducts)));
     }
 
     public void init(){
@@ -71,10 +60,7 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
-        if(!this.isNewOrder)
-            actionBar.setTitle(getResources().getString(R.string.update_order));
-        else
-            actionBar.setTitle(getResources().getString(R.string.create_order));
+        actionBar.setTitle(getResources().getString(R.string.product_chart));
 
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -104,10 +90,8 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        if(!this.isNewOrder){
-            Intent intent = new Intent();
-            setResult(RESULT_CANCELED, intent);
-        }
+        Intent intent = new Intent();
+        setResult(RESULT_CANCELED, intent);
         this.finish();
     }
 
@@ -133,17 +117,11 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.add_order) {
-            if(this.isNewOrder){
-                newOrder = new Order(table_number, product_order);
-                Intent intent = new Intent(this, SummaryOrderActivity.class);
-                intent.putExtra(getString(R.string.intentOrder), newOrder);
-                startActivity(intent);
-            }else{
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(getString(R.string.intentProducts),this.product_order);
-                setResult(RESULT_OK, returnIntent);
-                this.finish();
-            }
+
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra(getString(R.string.intentProducts),this.product_order);
+            setResult(RESULT_OK, returnIntent);
+            this.finish();
 
             return true;
         }

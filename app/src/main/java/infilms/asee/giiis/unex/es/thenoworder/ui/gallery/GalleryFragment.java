@@ -32,31 +32,15 @@ public class GalleryFragment extends Fragment {
 
     private GalleryViewModel galleryViewModel;
 
-    /*public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        galleryViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
-        return root;
-    }*/
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState){
         View root = inflater.inflate(R.layout.fragment_gallery, container, false);
 
-        //loadOrders();
 
         this.order_list_rv = root.findViewById(R.id.rv_paid_order_list_id);
         OrderAdapter O_adapter = new OrderAdapter(this.orderList,this.getContext(),true);
         LinearLayoutManager LLManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL,false);
-        //LLManager.setOrientation(LinearLayoutManager.VERTICAL);
         this.order_list_rv.setLayoutManager(LLManager);
 
         /*
@@ -81,26 +65,4 @@ public class GalleryFragment extends Fragment {
         return root;
     }
 
-
-   /* public void loadOrders(){
-        try {
-            this.orderList = new GalleryFragment.getAllOrders().execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }*/
-
-    /** ASYNC TASKS **/
-    /*1. Get All orders*/
-   /* class getAllOrders extends AsyncTask<Void, Void, List<Order>> {
-
-        @Override
-        protected List<Order> doInBackground(Void... voids) {
-            AppDatabase database = AppDatabase.getDatabase(getActivity());
-            List<Order> items = database.orderDao().getAllPaidOrders();
-            return items;
-        }
-    }*/
 }
