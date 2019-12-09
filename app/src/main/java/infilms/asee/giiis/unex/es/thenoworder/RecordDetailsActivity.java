@@ -41,6 +41,7 @@ public class RecordDetailsActivity extends AppCompatActivity {
         init();
 
 
+        this.mRepository = InjectorUtils.provideRepository(this);
         this.total_price = (TextView) findViewById(R.id.record_total_price_tv);
         this.total_price.setText(String.valueOf(order.getTotal_price()));
 
@@ -85,7 +86,7 @@ public class RecordDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //order.setPaid_order(true);
-                mRepository = InjectorUtils.provideRepository(view.getContext());
+                //mRepository = InjectorUtils.provideRepository(view.getContext());
                 mRepository.deleteOrder(order);
                 //new deleteOrder().execute(order);
                 finish();

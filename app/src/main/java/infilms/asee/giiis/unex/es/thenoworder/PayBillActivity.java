@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import infilms.asee.giiis.unex.es.thenoworder.adapters.SummaryProductAdapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
+import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
 import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.AppDatabase;
+import infilms.asee.giiis.unex.es.thenoworder.utilities.InjectorUtils;
 
 
 import android.content.Intent;
@@ -23,6 +25,7 @@ import android.widget.TextView;
 
 public class PayBillActivity extends AppCompatActivity {
 
+    private repositoryPtt mRepository;
     private TextView total_price, bill_message;
     private EditText cash;
     private Button pay_bill;
@@ -40,6 +43,7 @@ public class PayBillActivity extends AppCompatActivity {
         getIntentOrder();
         init();
 
+        this.mRepository = InjectorUtils.provideRepository(this);
         this.total_price = (TextView) findViewById(R.id.total_price_bill_tv);
         this.total_price.setText(String.valueOf(order.getTotal_price()));
 
@@ -118,10 +122,12 @@ public class PayBillActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 order.setPaid_order(true);
-                new updateOrder().execute(order);
-                finishAffinity(); //Este método finaliza la actividad, así como todas las actividades debajo de ella en la tarea actual que tengan la misma afinidad.
-                Intent intent = new Intent(view.getContext(), MainActivity.class);
-                startActivity(intent);
+                mRepository.updateOrder(order);
+                finish();
+                //new updateOrder().execute(order);
+               // finishAffinity(); //Este método finaliza la actividad, así como todas las actividades debajo de ella en la tarea actual que tengan la misma afinidad.
+                //Intent intent = new Intent(view.getContext(), MainActivity.class);
+                //startActivity(intent);
             }
         });
     }
@@ -138,7 +144,7 @@ public class PayBillActivity extends AppCompatActivity {
     }
 
     /*2. Update order*/
-    class updateOrder extends AsyncTask<Order, Void, Long> {
+    /*class updateOrder extends AsyncTask<Order, Void, Long> {
 
         @Override
         protected Long doInBackground(Order... orders) {
@@ -147,7 +153,7 @@ public class PayBillActivity extends AppCompatActivity {
             long id = database.orderDao().updateOrder(order);
             return id;
         }
-    }
+    }*/
 
 
 }

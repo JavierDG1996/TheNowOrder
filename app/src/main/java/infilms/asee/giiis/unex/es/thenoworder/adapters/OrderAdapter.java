@@ -131,6 +131,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                 }
             });
             orderList = newOrderList;
+            notifyDataSetChanged();
             result.dispatchUpdatesTo(this);
         }
     }

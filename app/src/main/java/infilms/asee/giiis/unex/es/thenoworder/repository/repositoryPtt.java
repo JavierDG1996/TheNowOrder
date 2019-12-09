@@ -150,6 +150,16 @@ public class repositoryPtt {
         });
     }
 
+    public void updateOrder(Order order){
+        mAppExecutors.getDiskIO().execute(()->{
+            mOrderDao.updateOrder(order);
+        });
+    }
 
+    public void addOrder(Order order){
+        mAppExecutors.getDiskIO().execute(()->{
+            mOrderDao.addOrder(order);
+        });
+    }
 
 }

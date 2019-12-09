@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import infilms.asee.giiis.unex.es.thenoworder.adapters.SummaryProductAdapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
+import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
 import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.AppDatabase;
+import infilms.asee.giiis.unex.es.thenoworder.utilities.InjectorUtils;
 
 
 import android.content.Intent;
@@ -28,6 +30,7 @@ import java.util.concurrent.ExecutionException;
 
 public class SummaryOrderActivity extends AppCompatActivity {
 
+    private repositoryPtt mRepository;
     private static final int ADD_PRODUCT_ORDER = 0;
     private Order order;
     private RecyclerView order_products;
@@ -95,6 +98,7 @@ public class SummaryOrderActivity extends AppCompatActivity {
     }
 
     public void loadView(){
+        this.mRepository = InjectorUtils.provideRepository(this);
         this.order_products = findViewById(R.id.order_summary_products);
         add_new_product = this.findViewById(R.id.add_new_product);
         SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this,this.order.getProduct_list(), this.order,true);
@@ -112,7 +116,8 @@ public class SummaryOrderActivity extends AppCompatActivity {
 
 
     private void insertOrder(){
-        new createOrder().execute(this.order);
+        mRepository.addOrder(this.order);
+        //new createOrder().execute(this.order);
     }
 
     @Override
@@ -144,12 +149,14 @@ public class SummaryOrderActivity extends AppCompatActivity {
         if (id == R.id.add_order) {
             if(this.insert){
                 insertOrder();
+                finishAffinity(); //Este método finaliza la actividad, así como todas las actividades debajo de ella en la tarea actual que tengan la misma afinidad.
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
             }else{
                 updateOrder();
+                finish();
             }
-            finishAffinity(); //Este método finaliza la actividad, así como todas las actividades debajo de ella en la tarea actual que tengan la misma afinidad.
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+
             return true;
         }
 
@@ -157,19 +164,20 @@ public class SummaryOrderActivity extends AppCompatActivity {
     }
 
     private void updateOrder() {
-        try {
+        //try {
             this.order.updatePrice();
-            Log.w("updating...", "-> "+new updateOrder().execute(this.order).get());
-        } catch (ExecutionException e) {
+            mRepository.updateOrder(this.order);
+            //Log.w("updating...", "-> "+new updateOrder().execute(this.order).get());
+       /*} catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     /** ASYNC TASKS **/
     /*1. Create new order*/
-    class createOrder extends AsyncTask<Order, Void, Long> {
+    /*class createOrder extends AsyncTask<Order, Void, Long> {
 
         @Override
         protected Long doInBackground(Order... orders) {
@@ -178,10 +186,10 @@ public class SummaryOrderActivity extends AppCompatActivity {
             long id = database.orderDao().addOrder(order);
             return id;
         }
-    }
+    }*/
 
     /*2. Update order*/
-    class updateOrder extends AsyncTask<Order, Void, Long> {
+    /*class updateOrder extends AsyncTask<Order, Void, Long> {
 
         @Override
         protected Long doInBackground(Order... orders) {
@@ -190,6 +198,6 @@ public class SummaryOrderActivity extends AppCompatActivity {
             long id = database.orderDao().updateOrder(order);
             return id;
         }
-    }
+    }*/
 
 }
