@@ -14,7 +14,7 @@ public class SendViewModel extends ViewModel {
 
     public SendViewModel() {
         mTextAbout = new MutableLiveData<>();
-        mTextAbout.setValue("Esta aplicación fue creada por:");
+        mTextAbout.setValue("The Now Order fue creada por:");
 
         mTextAuthor1 = new MutableLiveData<>();
         mTextAuthor1.setValue("Javier Durán García");
@@ -23,10 +23,10 @@ public class SendViewModel extends ViewModel {
         mTextGmail1.setValue("jadurang@alumnos.unex.es");
 
         mTextAuthor2 = new MutableLiveData<>();
-        mTextAuthor2.setValue("Juan Francisco Martín");
+        mTextAuthor2.setValue("Juan Francisco Martín Granado");
 
         mTextGmail2 = new MutableLiveData<>();
-        mTextGmail2.setValue("jfmartin@alumnos.unex.es");
+        mTextGmail2.setValue("jmartinfy@alumnos.unex.es");
     }
 
     public LiveData<String> getAbout() {

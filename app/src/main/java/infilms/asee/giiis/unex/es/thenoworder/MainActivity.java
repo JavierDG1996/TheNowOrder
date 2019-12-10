@@ -1,36 +1,23 @@
 package infilms.asee.giiis.unex.es.thenoworder;
 
 import android.content.Intent;
-
 import android.os.Bundle;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
-
 import androidx.annotation.NonNull;
-
 import androidx.core.view.GravityCompat;
-
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
 import com.google.android.material.navigation.NavigationView;
-
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-
-
 import android.view.Menu;
-import android.widget.Toast;
 
 
 
@@ -75,51 +62,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.bringToFront();
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
 
-                switch(menuItem.getItemId()){
+            switch(menuItem.getItemId()){
 
-                    case R.id.nav_home:
-                        navController.navigate(R.id.nav_home);
-                        break;
-                    case R.id.nav_gallery:
-                        navController.navigate(R.id.nav_gallery);
-                        break;
-                    case R.id.nav_slideshow:
-                        navController.navigate(R.id.nav_slideshow);
-                        break;
-                    case R.id.nav_tools:
-                        navController.navigate(R.id.nav_tools);
-                        break;
-                    case R.id.nav_share:
-                        navController.navigate(R.id.nav_share);
-                        break;
-                    case R.id.nav_send:
-                        navController.navigate(R.id.nav_send);
-                        break;
+                case R.id.nav_home:
+                    navController.navigate(R.id.nav_home);
+                    break;
+                case R.id.nav_gallery:
+                    navController.navigate(R.id.nav_gallery);
+                    break;
+                case R.id.nav_slideshow:
+                    navController.navigate(R.id.nav_slideshow);
+                    break;
+                case R.id.nav_tools:
+                    navController.navigate(R.id.nav_tools);
+                    break;
+                case R.id.nav_share:
+                    navController.navigate(R.id.nav_share);
+                    break;
+                case R.id.nav_send:
+                    navController.navigate(R.id.nav_send);
+                    break;
 
 
-                }
-
-                menuItem.setChecked(true);
-                drawer.closeDrawer(GravityCompat.START);
-
-
-                return true;
             }
+
+            menuItem.setChecked(true);
+            drawer.closeDrawer(GravityCompat.START);
+
+
+            return true;
         });
     }
 
     public void manageFloatingButton(){
         FloatingActionButton new_order = findViewById(R.id.new_order);
-        new_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), SelectTableActivity.class);
-                startActivity(intent);
-            }
+        new_order.setOnClickListener((View view) -> {
+            Intent intent = new Intent(view.getContext(), SelectTableActivity.class);
+            startActivity(intent);
         });
     }
 
