@@ -1,4 +1,4 @@
-package infilms.asee.giiis.unex.es.thenoworder.ViewModel;
+package infilms.asee.giiis.unex.es.thenoworder.ui.main;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

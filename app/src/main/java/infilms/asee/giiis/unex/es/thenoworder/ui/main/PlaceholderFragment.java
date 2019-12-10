@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import infilms.asee.giiis.unex.es.thenoworder.R;
-import infilms.asee.giiis.unex.es.thenoworder.ViewModel.ProductViewModel;
 import infilms.asee.giiis.unex.es.thenoworder.adapters.ProductAdapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
 import infilms.asee.giiis.unex.es.thenoworder.classes.ProductList;

@@ -1,8 +1,9 @@
-package infilms.asee.giiis.unex.es.thenoworder.ViewModel;
+package infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
+import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.SummaryOrderViewModel;
 
 public class SummaryOrderViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 

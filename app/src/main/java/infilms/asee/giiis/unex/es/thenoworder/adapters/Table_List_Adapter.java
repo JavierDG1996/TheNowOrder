@@ -15,9 +15,8 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import infilms.asee.giiis.unex.es.thenoworder.NewOrderTabbedActivity;
 import infilms.asee.giiis.unex.es.thenoworder.R;
-import infilms.asee.giiis.unex.es.thenoworder.SummaryOrderActivity;
+import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.SummaryOrderActivity;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Table;
 
 public class Table_List_Adapter extends RecyclerView.Adapter<Table_List_Adapter.MyViewHolder> {

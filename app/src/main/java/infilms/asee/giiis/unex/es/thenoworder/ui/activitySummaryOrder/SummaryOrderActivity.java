@@ -1,4 +1,4 @@
-package infilms.asee.giiis.unex.es.thenoworder;
+package infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -6,24 +6,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import infilms.asee.giiis.unex.es.thenoworder.ViewModel.CreateOrderViewModel;
-import infilms.asee.giiis.unex.es.thenoworder.ViewModel.CreateOrderViewModelFactory;
-import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SummaryOrderViewModel;
-import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SummaryOrderViewModelFactory;
+import infilms.asee.giiis.unex.es.thenoworder.MainActivity;
+import infilms.asee.giiis.unex.es.thenoworder.NewOrderTabbedActivity;
+import infilms.asee.giiis.unex.es.thenoworder.R;
 import infilms.asee.giiis.unex.es.thenoworder.adapters.SummaryProductAdapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
-import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
-import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.AppDatabase;
 import infilms.asee.giiis.unex.es.thenoworder.utilities.InjectorUtils;
 
 
 import android.content.Intent;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +27,6 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class SummaryOrderActivity extends AppCompatActivity {
 

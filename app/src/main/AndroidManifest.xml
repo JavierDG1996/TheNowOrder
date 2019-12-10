@@ -11,15 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".ui.settings.SettingsActivity"></activity>
         <activity android:name=".RecordDetailsActivity" />
         <activity android:name=".PayBillActivity" />
-        <activity android:name=".SummaryOrderActivity" />
+        <activity android:name=".ui.activitySummaryOrder.SummaryOrderActivity" />
         <activity
             android:name=".NewOrderTabbedActivity"
             android:label="@string/title_activity_new_order_tabbed"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SelectTableActivity" />
+        <activity android:name=".ui.activitySelectTable.SelectTableActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

@@ -3,9 +3,9 @@ package infilms.asee.giiis.unex.es.thenoworder.utilities;
 import android.content.Context;
 
 import infilms.asee.giiis.unex.es.thenoworder.Executors.AppExecutors;
-import infilms.asee.giiis.unex.es.thenoworder.ViewModel.CreateOrderViewModelFactory;
-import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SelectTableViewModelFactory;
-import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SummaryOrderViewModelFactory;
+import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.CreateOrderViewModelFactory;
+import infilms.asee.giiis.unex.es.thenoworder.ui.activitySelectTable.SelectTableViewModelFactory;
+import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.SummaryOrderViewModelFactory;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
 import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.AppDatabase;

@@ -1,8 +1,9 @@
-package infilms.asee.giiis.unex.es.thenoworder;
+package infilms.asee.giiis.unex.es.thenoworder.ui.settings;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import infilms.asee.giiis.unex.es.thenoworder.R;
 import infilms.asee.giiis.unex.es.thenoworder.ui.settings.SettingsFragment;
 
 

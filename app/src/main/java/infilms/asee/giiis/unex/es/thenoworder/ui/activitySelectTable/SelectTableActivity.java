@@ -1,4 +1,4 @@
-package infilms.asee.giiis.unex.es.thenoworder;
+package infilms.asee.giiis.unex.es.thenoworder.ui.activitySelectTable;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -8,18 +8,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SelectTableViewModel;
-import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SelectTableViewModelFactory;
+import infilms.asee.giiis.unex.es.thenoworder.R;
 import infilms.asee.giiis.unex.es.thenoworder.adapters.Table_List_Adapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Table;
-import infilms.asee.giiis.unex.es.thenoworder.ui.settings.SettingsFragment;
 import infilms.asee.giiis.unex.es.thenoworder.utilities.InjectorUtils;
 
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import android.preference.PreferenceManager;
 
 
 import java.util.ArrayList;

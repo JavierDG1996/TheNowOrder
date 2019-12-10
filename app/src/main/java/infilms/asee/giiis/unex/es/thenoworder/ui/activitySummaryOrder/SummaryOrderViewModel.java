@@ -1,4 +1,4 @@
-package infilms.asee.giiis.unex.es.thenoworder.ViewModel;
+package infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;

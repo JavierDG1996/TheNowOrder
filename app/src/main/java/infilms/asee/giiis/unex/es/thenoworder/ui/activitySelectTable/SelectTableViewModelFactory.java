@@ -1,10 +1,11 @@
-package infilms.asee.giiis.unex.es.thenoworder.ViewModel;
+package infilms.asee.giiis.unex.es.thenoworder.ui.activitySelectTable;
 
 import android.content.Context;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
+import infilms.asee.giiis.unex.es.thenoworder.ui.activitySelectTable.SelectTableViewModel;
 
 public class SelectTableViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
