@@ -36,7 +36,7 @@ public class SummaryOrderActivity extends AppCompatActivity {
 
     private repositoryPtt mRepository;
     private static final int ADD_PRODUCT_ORDER = 0;
-    private long id;
+    private long id_order;
     private Order order;
     private RecyclerView order_products;
     private FloatingActionButton add_new_product;
@@ -66,7 +66,7 @@ public class SummaryOrderActivity extends AppCompatActivity {
             Toast.makeText(this,"Recibido mesa "+table_number,Toast.LENGTH_SHORT).show();
             order = new Order(table_number, product_order);
         }else{
-            this.id = intent.getLongExtra(getString(R.string.intentOrder),0);
+            this.id_order = intent.getLongExtra(getString(R.string.intentOrder),0);
             //order = (Order) intent.getSerializableExtra(getString(R.string.intentOrder));
         }
 
@@ -106,7 +106,7 @@ public class SummaryOrderActivity extends AppCompatActivity {
         }else{
 
             //Si se está actualizando el pedido se debe recuperar utilizando el identificador del pedido
-            SummaryOrderViewModelFactory factory = InjectorUtils.provideSummartOrderViewModelFactory(this,id);
+            SummaryOrderViewModelFactory factory = InjectorUtils.provideSummartOrderViewModelFactory(this,id_order);
             this.summaryOrderViewModel = ViewModelProviders.of(this,factory).get(SummaryOrderViewModel.class);
 
             this.summaryOrderViewModel.getOrder().observe(this,newOrder->{

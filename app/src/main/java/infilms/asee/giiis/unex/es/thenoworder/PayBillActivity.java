@@ -2,8 +2,11 @@ package infilms.asee.giiis.unex.es.thenoworder;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SummaryOrderViewModel;
+import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SummaryOrderViewModelFactory;
 import infilms.asee.giiis.unex.es.thenoworder.adapters.SummaryProductAdapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
@@ -31,6 +34,9 @@ public class PayBillActivity extends AppCompatActivity {
     private Button pay_bill;
     private RecyclerView bill_product_list;
     private Order order;
+    private long id_order;
+
+    private SummaryOrderViewModel summaryOrderViewModel;
 
 
     @Override
@@ -45,7 +51,7 @@ public class PayBillActivity extends AppCompatActivity {
 
         this.mRepository = InjectorUtils.provideRepository(this);
         this.total_price = (TextView) findViewById(R.id.total_price_bill_tv);
-        this.total_price.setText(String.valueOf(order.getTotal_price()));
+
 
         this.bill_message = (TextView) findViewById(R.id.msg_bill_tv);
 
@@ -54,11 +60,29 @@ public class PayBillActivity extends AppCompatActivity {
         this.pay_bill =(Button) findViewById(R.id.pay_bill_button);
 
         this.bill_product_list = (RecyclerView) findViewById(R.id.rv_record_product_list);
-        SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this,this.order.getProduct_list(), this.order,false);
-        LinearLayoutManager LLManager = new LinearLayoutManager(this);
-        LLManager.setOrientation(LinearLayoutManager.VERTICAL);
-        this.bill_product_list.setLayoutManager(LLManager);
-        this.bill_product_list.setAdapter(SP_adapter);
+
+        SummaryOrderViewModelFactory factory = InjectorUtils.provideSummartOrderViewModelFactory(this,id_order);
+        this.summaryOrderViewModel = ViewModelProviders.of(this,factory).get(SummaryOrderViewModel.class);
+
+        this.summaryOrderViewModel.getOrder().observe(this,savedOrder->{
+            this.order = savedOrder;
+
+            this.total_price.setText(String.valueOf(order.getTotal_price()));
+
+            SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this,this.order.getProduct_list(), this.order,false);
+            LinearLayoutManager LLManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+
+            this.bill_product_list.setLayoutManager(LLManager);
+            /*
+             * Use this setting to improve performance if you know that changes in content do not
+             * change the child layout size in the RecyclerView
+             */
+            this.bill_product_list.setHasFixedSize(true);
+            this.bill_product_list.setAdapter(SP_adapter);
+        });
+
+
+
 
         this.cash.addTextChangedListener(ShowTextAndButton);
 
@@ -69,7 +93,8 @@ public class PayBillActivity extends AppCompatActivity {
 
     private void getIntentOrder(){
         Intent intent = getIntent();
-        this.order = (Order) intent.getSerializableExtra(getString(R.string.intentOrder));
+        //this.order = (Order) intent.getSerializableExtra(getString(R.string.intentOrder));
+        this.id_order = intent.getLongExtra(getString(R.string.intentOrder),0);
     }
 
     public void init(){
