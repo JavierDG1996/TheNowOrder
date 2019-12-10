@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import infilms.asee.giiis.unex.es.thenoworder.ViewModel.CreateOrderViewModel;
+import infilms.asee.giiis.unex.es.thenoworder.ViewModel.CreateOrderViewModelFactory;
 import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SummaryOrderViewModel;
 import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SummaryOrderViewModelFactory;
 import infilms.asee.giiis.unex.es.thenoworder.adapters.SummaryProductAdapter;
@@ -34,7 +36,6 @@ import java.util.concurrent.ExecutionException;
 
 public class SummaryOrderActivity extends AppCompatActivity {
 
-    private repositoryPtt mRepository;
     private static final int ADD_PRODUCT_ORDER = 0;
     private long id_order;
     private Order order;
@@ -43,6 +44,7 @@ public class SummaryOrderActivity extends AppCompatActivity {
     private Boolean insert;
 
     private SummaryOrderViewModel summaryOrderViewModel;
+    private CreateOrderViewModel createOrderViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,6 @@ public class SummaryOrderActivity extends AppCompatActivity {
             order = new Order(table_number, product_order);
         }else{
             this.id_order = intent.getLongExtra(getString(R.string.intentOrder),0);
-            //order = (Order) intent.getSerializableExtra(getString(R.string.intentOrder));
         }
 
     }
@@ -85,13 +86,15 @@ public class SummaryOrderActivity extends AppCompatActivity {
     }
 
     public void loadView(){
-        this.mRepository = InjectorUtils.provideRepository(this);
         this.order_products = findViewById(R.id.order_summary_products);
         add_new_product = this.findViewById(R.id.add_new_product);
 
 
+
         if(this.insert){
 
+            CreateOrderViewModelFactory factory = InjectorUtils.provideCreateOrderViewModelFactory(this,order);
+            this.createOrderViewModel = ViewModelProviders.of(this,factory).get(CreateOrderViewModel.class);
             //Si se está insertando el pedido utiliza el pedido que se ha creado en el momento
             SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this, this.order.getProduct_list(), this.order, true);
             LinearLayoutManager LLManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
@@ -106,6 +109,7 @@ public class SummaryOrderActivity extends AppCompatActivity {
         }else{
 
             //Si se está actualizando el pedido se debe recuperar utilizando el identificador del pedido
+
             SummaryOrderViewModelFactory factory = InjectorUtils.provideSummartOrderViewModelFactory(this,id_order);
             this.summaryOrderViewModel = ViewModelProviders.of(this,factory).get(SummaryOrderViewModel.class);
 
@@ -187,12 +191,12 @@ public class SummaryOrderActivity extends AppCompatActivity {
             this.order.calculateTotalPrice();
             Toast.makeText(this,"Numero productos "+this.order_products.getAdapter().getItemCount(),Toast.LENGTH_SHORT).show();
             if(this.insert){
-                mRepository.addOrder(this.order);
+                createOrderViewModel.addOrder();
                 finishAffinity(); //Este método finaliza la actividad, así como todas las actividades debajo de ella en la tarea actual que tengan la misma afinidad.
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }else{
-                mRepository.updateOrder(this.order);
+                summaryOrderViewModel.updateOrder();
                 finish();
             }
 

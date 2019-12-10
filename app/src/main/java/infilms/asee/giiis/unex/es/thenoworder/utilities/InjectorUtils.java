@@ -3,8 +3,10 @@ package infilms.asee.giiis.unex.es.thenoworder.utilities;
 import android.content.Context;
 
 import infilms.asee.giiis.unex.es.thenoworder.Executors.AppExecutors;
+import infilms.asee.giiis.unex.es.thenoworder.ViewModel.CreateOrderViewModelFactory;
 import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SelectTableViewModelFactory;
 import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SummaryOrderViewModelFactory;
+import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
 import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.AppDatabase;
 import infilms.asee.giiis.unex.es.thenoworder.ui.gallery.GalleryViewModelFactory;
@@ -36,5 +38,10 @@ public class InjectorUtils {
     public static SummaryOrderViewModelFactory provideSummartOrderViewModelFactory (Context context, long order_id){
         repositoryPtt r = provideRepository(context);
         return new SummaryOrderViewModelFactory(r,order_id);
+    }
+
+    public static CreateOrderViewModelFactory provideCreateOrderViewModelFactory (Context context, Order order){
+        repositoryPtt r = provideRepository(context);
+        return new CreateOrderViewModelFactory(r,order);
     }
 }

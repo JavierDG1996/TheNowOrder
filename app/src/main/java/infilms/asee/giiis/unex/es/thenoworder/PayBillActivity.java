@@ -28,7 +28,6 @@ import android.widget.TextView;
 
 public class PayBillActivity extends AppCompatActivity {
 
-    private repositoryPtt mRepository;
     private TextView total_price, bill_message;
     private EditText cash;
     private Button pay_bill;
@@ -49,7 +48,6 @@ public class PayBillActivity extends AppCompatActivity {
         getIntentOrder();
         init();
 
-        this.mRepository = InjectorUtils.provideRepository(this);
         this.total_price = (TextView) findViewById(R.id.total_price_bill_tv);
 
 
@@ -93,7 +91,6 @@ public class PayBillActivity extends AppCompatActivity {
 
     private void getIntentOrder(){
         Intent intent = getIntent();
-        //this.order = (Order) intent.getSerializableExtra(getString(R.string.intentOrder));
         this.id_order = intent.getLongExtra(getString(R.string.intentOrder),0);
     }
 
@@ -147,12 +144,8 @@ public class PayBillActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 order.setPaid_order(true);
-                mRepository.updateOrder(order);
+                summaryOrderViewModel.updateOrder();
                 finish();
-                //new updateOrder().execute(order);
-               // finishAffinity(); //Este método finaliza la actividad, así como todas las actividades debajo de ella en la tarea actual que tengan la misma afinidad.
-                //Intent intent = new Intent(view.getContext(), MainActivity.class);
-                //startActivity(intent);
             }
         });
     }
@@ -167,18 +160,5 @@ public class PayBillActivity extends AppCompatActivity {
     public void onBackPressed(){
         this.finish();
     }
-
-    /*2. Update order*/
-    /*class updateOrder extends AsyncTask<Order, Void, Long> {
-
-        @Override
-        protected Long doInBackground(Order... orders) {
-            AppDatabase database = AppDatabase.getDatabase(PayBillActivity.this);
-
-            long id = database.orderDao().updateOrder(order);
-            return id;
-        }
-    }*/
-
 
 }

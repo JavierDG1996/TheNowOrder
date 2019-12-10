@@ -2,8 +2,11 @@ package infilms.asee.giiis.unex.es.thenoworder;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SummaryOrderViewModel;
+import infilms.asee.giiis.unex.es.thenoworder.ViewModel.SummaryOrderViewModelFactory;
 import infilms.asee.giiis.unex.es.thenoworder.adapters.SummaryProductAdapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
@@ -21,12 +24,13 @@ import android.widget.Toast;
 
 public class RecordDetailsActivity extends AppCompatActivity {
 
-
-    private repositoryPtt mRepository;
     private TextView total_price, table, id;
     private Button delete_record;
     private RecyclerView record_product_list;
     private Order order;
+    private long id_order;
+
+    private SummaryOrderViewModel summaryOrderViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,25 +44,47 @@ public class RecordDetailsActivity extends AppCompatActivity {
         init();
 
 
+
         this.total_price = (TextView) findViewById(R.id.record_total_price_tv);
-        this.total_price.setText(String.valueOf(order.getTotal_price()));
+
 
         this.table = (TextView) findViewById(R.id.record_table_tv);
-        this.table.setText(String.valueOf(order.getTable()));
+
 
         this.id = (TextView) findViewById(R.id.record_id_tv);
-        this.id.setText(String.valueOf(order.getId_order()));
-        Toast.makeText(this,"Id: "+order.getId_order(),Toast.LENGTH_SHORT).show();
+
 
 
         this.delete_record =(Button) findViewById(R.id.delete_record_button);
 
         this.record_product_list = (RecyclerView) findViewById(R.id.rv_record_product_list);
-        SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this,this.order.getProduct_list(), this.order,false);
-        LinearLayoutManager LLManager = new LinearLayoutManager(this);
-        LLManager.setOrientation(LinearLayoutManager.VERTICAL);
-        this.record_product_list.setLayoutManager(LLManager);
-        this.record_product_list.setAdapter(SP_adapter);
+
+
+        SummaryOrderViewModelFactory factory = InjectorUtils.provideSummartOrderViewModelFactory(this,id_order);
+        this.summaryOrderViewModel = ViewModelProviders.of(this,factory).get(SummaryOrderViewModel.class);
+
+        this.summaryOrderViewModel.getOrder().observe(this,savedOrder->{
+
+            this.order = savedOrder;
+            if(this.order != null) {
+                this.total_price.setText(String.valueOf(order.getTotal_price()));
+                this.table.setText(String.valueOf(order.getTable()));
+                this.id.setText(String.valueOf(order.getId_order()));
+                Toast.makeText(this, "Id: " + order.getId_order(), Toast.LENGTH_SHORT).show();
+
+
+                SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this, this.order.getProduct_list(), this.order, false);
+                LinearLayoutManager LLManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+
+                this.record_product_list.setLayoutManager(LLManager);
+                /*
+                 * Use this setting to improve performance if you know that changes in content do not
+                 * change the child layout size in the RecyclerView
+                 */
+                this.record_product_list.setHasFixedSize(true);
+                this.record_product_list.setAdapter(SP_adapter);
+            }
+        });
 
         manageButton();
 
@@ -66,7 +92,7 @@ public class RecordDetailsActivity extends AppCompatActivity {
 
     private void getIntentOrder(){
         Intent intent = getIntent();
-        this.order = (Order) intent.getSerializableExtra(getString(R.string.intentOrder));
+        this.id_order = intent.getLongExtra(getString(R.string.intentOrder),0);
     }
 
     public void init(){
@@ -83,8 +109,7 @@ public class RecordDetailsActivity extends AppCompatActivity {
         this.delete_record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRepository = InjectorUtils.provideRepository(view.getContext());
-                mRepository.deleteOrder(order);
+                summaryOrderViewModel.deleteOrder();
                 finish();
             }
         });

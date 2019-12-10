@@ -1,7 +1,5 @@
 package infilms.asee.giiis.unex.es.thenoworder.ViewModel;
 
-import java.util.List;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
@@ -18,6 +16,14 @@ public class SummaryOrderViewModel extends ViewModel {
         this.mRepository = repository;
         this.order_id = order_id;
         this.order = mRepository.getOrderById(order_id);
+    }
+
+    public void updateOrder(){
+        mRepository.updateOrder(order.getValue());
+    }
+
+    public void deleteOrder(){
+        mRepository.deleteOrder(order.getValue());
     }
 
     public LiveData<Order> getOrder() {
