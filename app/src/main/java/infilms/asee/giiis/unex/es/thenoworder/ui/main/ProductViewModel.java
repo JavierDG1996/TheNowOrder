@@ -1,45 +1,36 @@
 package infilms.asee.giiis.unex.es.thenoworder.ui.main;
 
-import androidx.lifecycle.MutableLiveData;
+import java.util.List;
+
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import infilms.asee.giiis.unex.es.thenoworder.classes.ProductList;
+import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
+import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
 
 public class ProductViewModel extends ViewModel {
 
-    private MutableLiveData<ProductList> foodList;
-    private MutableLiveData<ProductList> drinkList;
-    private MutableLiveData<ProductList> dessertList;
+    private final repositoryPtt mRepository;
+    private LiveData<List<Product>> foodList;
+    private LiveData<List<Product>> drinkList;
+    private LiveData<List<Product>> dessertList;
 
-    public ProductViewModel(){
-        this.foodList =new MutableLiveData<>();
-        this.drinkList =new MutableLiveData<>();
-        this.dessertList =new MutableLiveData<>();
+    public ProductViewModel(repositoryPtt repository){
+        this.mRepository = repository;
+        this.foodList = repository.getFoodProductList();
+        this.drinkList = repository.getDrinkProductList();
+        this.dessertList = repository.getDessertProductList();
     }
 
-    public MutableLiveData<ProductList> getFoodList(){
+    public LiveData<List<Product>> getFoodList(){
         return this.foodList;
     }
 
-    public void setFoodList(ProductList productlist){
-        this.foodList.postValue(productlist);
-    }
-
-    public MutableLiveData<ProductList> getDrinkList(){
+    public LiveData<List<Product>> getDrinkList(){
         return this.drinkList;
     }
 
-    public void setDrinkList(ProductList productlist){
-        this.drinkList.postValue(productlist);
-    }
-
-    public MutableLiveData<ProductList> getDessertList(){
+    public LiveData<List<Product>> getDessertList(){
         return this.dessertList;
     }
-
-    public void setDessertList(ProductList productlist){
-        this.dessertList.postValue(productlist);
-    }
-
-
 }

@@ -14,14 +14,13 @@ import java.net.URL;
 import java.util.Random;
 
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
-import infilms.asee.giiis.unex.es.thenoworder.classes.ProductList;
 
 
 public class NetworkingAndroidHttpClientJSON {
 
-    private ProductList foodList;
-    private ProductList drinkList;
-    private ProductList dessertList;
+    private List<Product> foodList;
+    private List<Product> drinkList;
+    private List<Product> dessertList;
 
     /*
     * public builder
@@ -29,9 +28,9 @@ public class NetworkingAndroidHttpClientJSON {
     * Make asynchronous calls to APIS
     */
     public NetworkingAndroidHttpClientJSON() {
-        foodList=new ProductList();
-        drinkList=new ProductList();
-        dessertList=new ProductList();
+        foodList= new ArrayList<Product>();
+        drinkList= new ArrayList<Product>();
+        dessertList= new ArrayList<Product>();
 
         new HttpGetTaskDrink().execute();
         new HttpGetTaskFood().execute();
@@ -43,7 +42,7 @@ public class NetworkingAndroidHttpClientJSON {
      *
      * @return List containing all the foods
      */
-    public ProductList getFood_list() {
+    public List<Product> getFood_list() {
         return foodList;
     }
 
@@ -52,7 +51,7 @@ public class NetworkingAndroidHttpClientJSON {
      *
      * @return List containing all the desserts
      */
-    public ProductList getListDessert() {
+    public List<Product> getListDessert() {
         return dessertList;
     }
 
@@ -61,7 +60,7 @@ public class NetworkingAndroidHttpClientJSON {
      *
      * @return List containing all the drinks
      */
-    public ProductList getListDrinks() {
+    public List<Product> getListDrinks() {
         return drinkList;
     }
 

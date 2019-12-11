@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -16,16 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import infilms.asee.giiis.unex.es.thenoworder.NewOrderTabbedActivity;
 import infilms.asee.giiis.unex.es.thenoworder.R;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
-import infilms.asee.giiis.unex.es.thenoworder.classes.ProductList;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHolder> {
 
     private Context mContext;
-    private ProductList product_list;
+
+    private List<Product> product_list;
 
     private FragmentActivity fragmentActivity;
 
-    public ProductAdapter(Context mContext, ProductList product_list, FragmentActivity fragmentActivity) {
+    public ProductAdapter(Context mContext, List<Product> product_list, FragmentActivity fragmentActivity) {
         this.mContext = mContext;
         this.product_list = product_list;
         this.fragmentActivity = fragmentActivity;
@@ -44,14 +43,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
-        holder.product_name.setText(product_list.getProduct(position).getProduct_name());
-        holder.product_price.setText(String.valueOf(product_list.getProduct(position).getProduct_price()));
+
+        holder.product_name.setText(product_list.get(position).getProduct_name());
+        holder.product_price.setText(String.valueOf(product_list.get(position).getProduct_price()));
 
         holder.product_description.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NewOrderTabbedActivity activity = (NewOrderTabbedActivity) fragmentActivity;
-                activity.addProductToOrder(product_list.getProduct(position));
+                activity.addProductToOrder(product_list.get(position));
             }
         });
     }
@@ -59,7 +59,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     @Override
     public int getItemCount() {
         if(product_list != null)
-            return product_list.getSize();
+            return product_list.size();
         return 0;
     }
 
@@ -80,7 +80,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         }
     }
 
-    public void load(ProductList newProduct_list){
+    public void load(List<Product> newProduct_list){
         product_list.clear();
         product_list= newProduct_list;
         notifyDataSetChanged();

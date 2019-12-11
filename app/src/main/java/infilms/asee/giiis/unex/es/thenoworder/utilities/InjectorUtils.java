@@ -11,6 +11,7 @@ import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
 import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.AppDatabase;
 import infilms.asee.giiis.unex.es.thenoworder.ui.gallery.GalleryViewModelFactory;
 import infilms.asee.giiis.unex.es.thenoworder.ui.home.HomeViewModelFactory;
+import infilms.asee.giiis.unex.es.thenoworder.ui.main.ProductViewModelFactory;
 
 public class InjectorUtils {
 
@@ -43,5 +44,10 @@ public class InjectorUtils {
     public static CreateOrderViewModelFactory provideCreateOrderViewModelFactory (Context context, Order order){
         repositoryPtt r = provideRepository(context);
         return new CreateOrderViewModelFactory(r,order);
+    }
+
+    public static ProductViewModelFactory provideProductViewModelFactory (Context context){
+        repositoryPtt r = provideRepository(context);
+        return new ProductViewModelFactory(r);
     }
 }

@@ -30,6 +30,11 @@ public class repositoryPtt {
 
     private NetworkingAndroidHttpClientJSON api;
 
+    private MutableLiveData<List<Product>> FoodList;
+    private MutableLiveData<List<Product>> DrinkList;
+    private MutableLiveData<List<Product>> DessertList;
+
+
     /**
      * Private constructor of AppRepository class. Its a must in a singleton pattern.
      *
@@ -39,6 +44,18 @@ public class repositoryPtt {
         api= new NetworkingAndroidHttpClientJSON();
         this.mOrderDao = mOrderDao;
         this.mAppExecutors = mAppExecutors;
+        this.FoodList = new MutableLiveData<>();
+        this.DrinkList = new MutableLiveData<>();
+        this.DessertList = new MutableLiveData<>();
+
+
+        this.mAppExecutors.getNetworkIO().execute(() -> {
+            this.FoodList.postValue(getFoodFromApi());
+            this.DrinkList.postValue(getDrinkFromApi());
+            this.DessertList.postValue(getDessertFromApi());
+        });
+
+
     }
 
     /**
@@ -61,10 +78,10 @@ public class repositoryPtt {
      *
      * @return List containing all the food from the API
      */
-    public List<Product> getFoodFromApi() {
+    private List<Product> getFoodFromApi() {
         List<Product> foods = new ArrayList<>();
         if (api.getFood_list() != null) {
-            foods = api.getFood_list().getElements();
+            foods = api.getFood_list();
 
             Log.v(LOAD_FoodList, "Getting foods from the API");
             for (Product e : foods) {
@@ -75,15 +92,19 @@ public class repositoryPtt {
         return foods;
     }
 
+    public LiveData<List<Product>> getFoodProductList(){
+        return this.FoodList;
+    }
+
     /**
      * GET all the drinks from the API
      *
      * @return List containing all the drinks from the API
      */
-    public List<Product> getDrinkFromApi() {
+    private List<Product> getDrinkFromApi() {
         List<Product> drinks = new ArrayList<>();
         if (api.getListDrinks() != null) {
-            drinks = api.getListDrinks().getElements();
+            drinks = api.getListDrinks();
 
             Log.v(LOAD_DrinkList, "Getting drinks from the API");
             for (Product e : drinks) {
@@ -94,15 +115,19 @@ public class repositoryPtt {
         return drinks;
     }
 
+    public LiveData<List<Product>> getDrinkProductList(){
+        return this.DrinkList;
+    }
+
     /**
      * GET all the desserts from the API
      *
      * @return List containing all the desserts from the API
      */
-    public List<Product> getDessertFromApi() {
+    private List<Product> getDessertFromApi() {
         List<Product> desserts = new ArrayList<>();
         if (api.getListDessert() != null) {
-            desserts = api.getListDessert().getElements();
+            desserts = api.getListDessert();
 
             Log.v(LOAD_DessertList, "Getting desserts from the API");
             for (Product e : desserts) {
@@ -111,6 +136,10 @@ public class repositoryPtt {
 
         }
         return desserts;
+    }
+
+    public LiveData<List<Product>> getDessertProductList(){
+        return this.DessertList;
     }
 
     /**
