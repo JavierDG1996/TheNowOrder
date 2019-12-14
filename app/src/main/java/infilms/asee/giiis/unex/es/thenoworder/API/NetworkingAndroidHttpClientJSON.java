@@ -11,15 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import infilms.asee.giiis.unex.es.thenoworder.Executors.AppExecutors;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
 
 
 public class NetworkingAndroidHttpClientJSON {
 
-    private List<Product> foodList;
-    private List<Product> drinkList;
-    private List<Product> dessertList;
+    private MutableLiveData<List<Product>> foodList;
+    private MutableLiveData<List<Product>> drinkList;
+    private MutableLiveData<List<Product>> dessertList;
 
     //  Variables para soopnacular
 
@@ -43,21 +45,24 @@ public class NetworkingAndroidHttpClientJSON {
     private static final String path5 = "filter.php";
     private static final String param = "Non_Alcoholic";
 
+    private final AppExecutors mAppExecutors;
+
     /*
     * public builder
     * Initialize product lists
     * Ejecutar con el hilo de NetworkIO los metodos que obtienen los productos de la API
     */
     public NetworkingAndroidHttpClientJSON(AppExecutors mAppExecutors) {
-        foodList= new ArrayList<>();
-        drinkList= new ArrayList<>();
-        dessertList= new ArrayList<>();
+        this.mAppExecutors = mAppExecutors;
+        foodList= new MutableLiveData<>();
+        drinkList= new MutableLiveData<>();
+        dessertList= new MutableLiveData<>();
 
-        mAppExecutors.getNetworkIO().execute(() -> {
-            this.loadFood();
-            this.loadDessert();
-            this.loadDrink();
-        });
+        //mAppExecutors.getNetworkIO().execute(() -> {
+            //this.loadFood();
+            //this.loadDessert();
+            //this.loadDrink();
+        //});
     }
 
     /*
@@ -65,7 +70,7 @@ public class NetworkingAndroidHttpClientJSON {
      *
      * @return List containing all the foods
      */
-    public List<Product> getFood_list() {
+    public LiveData<List<Product>> getFood_list() {
         return foodList;
     }
 
@@ -74,7 +79,7 @@ public class NetworkingAndroidHttpClientJSON {
      *
      * @return List containing all the desserts
      */
-    public List<Product> getListDessert() {
+    public LiveData<List<Product>> getListDessert() {
         return dessertList;
     }
 
@@ -83,7 +88,7 @@ public class NetworkingAndroidHttpClientJSON {
      *
      * @return List containing all the drinks
      */
-    public List<Product> getListDrinks() {
+    public LiveData<List<Product>> getListDrinks() {
         return drinkList;
     }
 
@@ -108,21 +113,23 @@ public class NetworkingAndroidHttpClientJSON {
     * Con el objeto que se devuelve (JSON) se llama al metodo jsonToListFood
     * para convertir JSON a Lista
     * */
-    private void loadFood() {
-        URL queryURL;
-        JSONObject result;
+    public void loadFood() {
+        mAppExecutors.getNetworkIO().execute(() -> {
+            URL queryURL;
+            JSONObject result;
 
-        queryURL= getURLFood(apiKeyValue);
-        result = NetworkUtils.getJSONResponse(queryURL);
-
-        if(result == null){
-            queryURL= getURLFood(apiKeyValueAux);
+            queryURL= getURLFood(apiKeyValue);
             result = NetworkUtils.getJSONResponse(queryURL);
-        }
 
-        if (result != null) {
-            jsonToListFood(result);
-        }
+            if(result == null){
+                queryURL= getURLFood(apiKeyValueAux);
+                result = NetworkUtils.getJSONResponse(queryURL);
+            }
+
+            if (result != null) {
+                jsonToListFood(result);
+            }
+        });
     }
 
     /*
@@ -131,8 +138,9 @@ public class NetworkingAndroidHttpClientJSON {
     * */
     private void jsonToListFood(JSONObject responseObject) {
 
+        List<Product> productList = new ArrayList<>();
         Random r = new Random();
-        int price;
+        float price;
         String nameProduct;
         JSONArray Products;
         try {
@@ -143,12 +151,16 @@ public class NetworkingAndroidHttpClientJSON {
             for (int idx = 0; idx < Products.length(); idx++) {
                 // Get single Product data - a Map
                 JSONObject Product = (JSONObject) Products.get(idx);
-                price = r.nextInt(30);
+                //price = r.nextInt(30);
+                price =(float)(3*idx+2)/5+13;
                 nameProduct = Product.get("title").toString();
-                Product ProductObj = new Product(nameProduct, (float) price);
+                Product ProductObj = new Product(nameProduct, price,"Food");
 
-                foodList.add(ProductObj);
+
+                productList.add(ProductObj);
             }
+
+            foodList.postValue(productList);
 
 
         } catch (JSONException e) {
@@ -179,21 +191,23 @@ public class NetworkingAndroidHttpClientJSON {
      * Con el objeto que se devuelve (JSON) se llama al metodo jsonToListFood
      * para convertir JSON a Lista
      * */
-    private void loadDessert() {
-        URL queryURL;
-        JSONObject result;
+    public void loadDessert() {
+        mAppExecutors.getNetworkIO().execute(() -> {
+            URL queryURL;
+            JSONObject result;
 
-        queryURL=getURLDessert(apiKeyValue);
-        result = NetworkUtils.getJSONResponse(queryURL);
-
-        if(result == null){
-            queryURL= getURLFood(apiKeyValueAux);
+            queryURL=getURLDessert(apiKeyValue);
             result = NetworkUtils.getJSONResponse(queryURL);
-        }
 
-        if (result != null) {
-            jsonToListDessert(result);
-        }
+            if(result == null){
+                queryURL= getURLFood(apiKeyValueAux);
+                result = NetworkUtils.getJSONResponse(queryURL);
+            }
+
+            if (result != null) {
+                jsonToListDessert(result);
+            }
+        });
     }
 
     /*
@@ -202,8 +216,9 @@ public class NetworkingAndroidHttpClientJSON {
      * */
     private void jsonToListDessert(JSONObject responseObject) {
 
+        List<Product> productList = new ArrayList<>();
         Random r = new Random();
-        int price;
+        float price;
         String nameProduct;
         JSONArray Products;
 
@@ -213,13 +228,15 @@ public class NetworkingAndroidHttpClientJSON {
             for (int idx = 0; idx < Products.length(); idx++) {
                 // Get single Product data - a Map
                 JSONObject Product = (JSONObject) Products.get(idx);
-                price = r.nextInt(30);
+                //price = r.nextInt(30);
+                price =(float)(3*idx+2)/5+5;
                 nameProduct = Product.get("title").toString();
-                Product ProductObj = new Product(nameProduct, (float) price);
+                Product ProductObj = new Product(nameProduct, price,"Dessert");
 
-                dessertList.add(ProductObj);
+                productList.add(ProductObj);
+
             }
-
+            dessertList.postValue(productList);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -236,19 +253,21 @@ public class NetworkingAndroidHttpClientJSON {
     /*
      * Construir la utl para la API thecocktaildb para sacar las bebidas
      * */
-   private void loadDrink() {
-        URL queryURL;
-        JSONObject result;
+    public void loadDrink() {
+        mAppExecutors.getNetworkIO().execute(() -> {
+            URL queryURL;
+            JSONObject result;
 
-        queryURL = NetworkUtils.buildURL(BASE_URLdrink,
-                new String[]{path, path2, path3, path4, path5},
-                new Pair<>("a", param));
-        result = NetworkUtils.getJSONResponse(queryURL);
+            queryURL = NetworkUtils.buildURL(BASE_URLdrink,
+                    new String[]{path, path2, path3, path4, path5},
+                    new Pair<>("a", param));
+            result = NetworkUtils.getJSONResponse(queryURL);
 
-        if (result != null) {
-            //Log.v("Lista de bebidas", "Getting response from the API");
-            jsonToListDrink(result);
-        }
+            if (result != null) {
+                //Log.v("Lista de bebidas", "Getting response from the API");
+                jsonToListDrink(result);
+            }
+        });
     }
 
     /*
@@ -256,8 +275,10 @@ public class NetworkingAndroidHttpClientJSON {
      * que se usaran para rellenar la lista de bebidas
      * */
     private void jsonToListDrink(JSONObject responseObject) {
+
+        List<Product> productList = new ArrayList<>();
         Random r = new Random();
-        int price;
+        float price;
         String nameProduct;
         JSONArray Products;
         try {
@@ -267,14 +288,17 @@ public class NetworkingAndroidHttpClientJSON {
             for (int idx = 0; idx < 15; idx++) {
                 // Get single Product data - a Map
                 JSONObject Product = (JSONObject) Products.get(idx);
-                price = r.nextInt(30);
+                //price = r.nextInt(30);
+                price =(float)(3*idx+2)/5+2;
                 nameProduct = Product.get("strDrink").toString();
-                Product ProductObj = new Product(nameProduct, (float) price);
+                Product ProductObj = new Product(nameProduct, price,"Drinks");
 
-                drinkList.add(ProductObj);
+                productList.add(ProductObj);
+
                 //Log.v("Nombre producto= ", nameProduct);
             }
 
+            drinkList.postValue(productList);
 
         } catch (JSONException e) {
             e.printStackTrace();

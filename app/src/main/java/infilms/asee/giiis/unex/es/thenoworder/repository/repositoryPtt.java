@@ -16,6 +16,7 @@ import infilms.asee.giiis.unex.es.thenoworder.Executors.AppExecutors;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
 import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.OrderDao;
+import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.ProductDao;
 import infilms.asee.giiis.unex.es.thenoworder.ui.settings.SettingsFragment;
 
 public class repositoryPtt {
@@ -23,6 +24,7 @@ public class repositoryPtt {
     private static repositoryPtt instance;
 
     private final OrderDao mOrderDao;
+    private final ProductDao mProductDao;
     private final AppExecutors mAppExecutors;
 
     private static final String LOAD_FoodList = "FoodList";
@@ -35,25 +37,57 @@ public class repositoryPtt {
     private MutableLiveData<List<Product>> DrinkList;
     private MutableLiveData<List<Product>> DessertList;
 
+    private boolean mInitialized = false;
+
 
     /**
      * Private constructor of AppRepository class. Its a must in a singleton pattern.
      *
      * @param c Activity context from where we are instantiating the repository
      */
-    private repositoryPtt(Context c, OrderDao mOrderDao, AppExecutors mAppExecutors){
-        api= new NetworkingAndroidHttpClientJSON(mAppExecutors);
+    private repositoryPtt(Context c, OrderDao mOrderDao, ProductDao mProductDao, AppExecutors mAppExecutors){
+
         this.mOrderDao = mOrderDao;
+        this.mProductDao = mProductDao;
         this.mAppExecutors = mAppExecutors;
+        api= new NetworkingAndroidHttpClientJSON(this.mAppExecutors);
         this.FoodList = new MutableLiveData<>();
         this.DrinkList = new MutableLiveData<>();
         this.DessertList = new MutableLiveData<>();
 
+        //FoodList.observeForever();
 
-        this.mAppExecutors.getNetworkIO().execute(() -> {
+        /*this.mAppExecutors.getNetworkIO().execute(() -> {
             this.FoodList.postValue(getFoodFromApi());
             this.DrinkList.postValue(getDrinkFromApi());
             this.DessertList.postValue(getDessertFromApi());
+        });*/
+
+        LiveData<List<Product>> food = api.getFood_list();
+        food.observeForever(newFood -> {
+            mAppExecutors.getDiskIO().execute(() -> {
+                mProductDao.deleteFoodProducts();
+
+                mProductDao.bulkInsert(newFood);
+            });
+        });
+
+        LiveData<List<Product>> drinks = api.getListDrinks();
+        drinks.observeForever(newDrinks -> {
+            mAppExecutors.getDiskIO().execute(() -> {
+                mProductDao.deleteDrinkProducts();
+
+                mProductDao.bulkInsert(newDrinks);
+            });
+        });
+
+        LiveData<List<Product>> desserts = api.getListDessert();
+        desserts.observeForever(newDesserts -> {
+            mAppExecutors.getDiskIO().execute(() -> {
+                mProductDao.deleteDessertProducts();
+
+                mProductDao.bulkInsert(newDesserts);
+            });
         });
 
 
@@ -65,15 +99,35 @@ public class repositoryPtt {
      * @param c Activity context from where we are instantiating the repository
      * @return Instance of repository
      */
-    public static repositoryPtt getInstance(Context c, OrderDao mOrderDao, AppExecutors mAppExecutors){
+    public static repositoryPtt getInstance(Context c, OrderDao mOrderDao, ProductDao mProductDao, AppExecutors mAppExecutors){
         if(instance == null){
             synchronized (LOCK) {
-                instance = new repositoryPtt(c.getApplicationContext(), mOrderDao, mAppExecutors);
+                instance = new repositoryPtt(c.getApplicationContext(), mOrderDao,mProductDao, mAppExecutors);
             }
         }
         return instance;
     }
 
+
+    private synchronized void initializeData() {
+
+        // Only perform initialization once per app lifetime. If initialization has already been
+        // performed, we have nothing to do in this method.
+        if (mInitialized) return;
+        mInitialized = true;
+
+        // This method call triggers Sunshine to create its task to synchronize weather data
+        // periodically.
+        //mWeatherNetworkDataSource.scheduleRecurringFetchWeatherSync();
+
+        mAppExecutors.getDiskIO().execute(() -> {
+            //if (isFetchNeeded()) {
+                api.loadFood();
+                api.loadDessert();
+                api.loadDrink();
+            //}
+        });
+    }
     /**
      * GET all the foods from the API
      *
@@ -82,7 +136,7 @@ public class repositoryPtt {
     private List<Product> getFoodFromApi() {
         List<Product> foods = new ArrayList<>();
         if (api.getFood_list() != null) {
-            foods = api.getFood_list();
+            //foods = api.getFood_list();
 
             Log.v(LOAD_FoodList, "Getting foods from the API");
             for (Product e : foods) {
@@ -94,7 +148,9 @@ public class repositoryPtt {
     }
 
     public LiveData<List<Product>> getFoodProductList(){
-        return this.FoodList;
+        //return this.FoodList;
+        initializeData();
+        return mProductDao.getFoodProducts();
     }
 
     /**
@@ -105,7 +161,7 @@ public class repositoryPtt {
     private List<Product> getDrinkFromApi() {
         List<Product> drinks = new ArrayList<>();
         if (api.getListDrinks() != null) {
-            drinks = api.getListDrinks();
+            //drinks = api.getListDrinks();
 
             Log.v(LOAD_DrinkList, "Getting drinks from the API");
             for (Product e : drinks) {
@@ -117,7 +173,9 @@ public class repositoryPtt {
     }
 
     public LiveData<List<Product>> getDrinkProductList(){
-        return this.DrinkList;
+        //return this.DrinkList;
+        initializeData();
+        return mProductDao.getDrinkProducts();
     }
 
     /**
@@ -128,7 +186,7 @@ public class repositoryPtt {
     private List<Product> getDessertFromApi() {
         List<Product> desserts = new ArrayList<>();
         if (api.getListDessert() != null) {
-            desserts = api.getListDessert();
+            //desserts = api.getListDessert();
 
             Log.v(LOAD_DessertList, "Getting desserts from the API");
             for (Product e : desserts) {
@@ -140,7 +198,9 @@ public class repositoryPtt {
     }
 
     public LiveData<List<Product>> getDessertProductList(){
-        return this.DessertList;
+        //return this.DessertList;
+        initializeData();
+        return mProductDao.getDessertProducts();
     }
 
     /**

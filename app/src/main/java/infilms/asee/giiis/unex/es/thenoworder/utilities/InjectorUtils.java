@@ -18,7 +18,7 @@ public class InjectorUtils {
     public static repositoryPtt provideRepository(Context context) {
         AppDatabase database = AppDatabase.getDatabase(context.getApplicationContext());
         AppExecutors executors = AppExecutors.getInstance();
-        return repositoryPtt.getInstance(context,database.orderDao(), executors);
+        return repositoryPtt.getInstance(context,database.orderDao(),database.productDao(), executors);
     }
 
     public static HomeViewModelFactory provideHomeViewModelFactory (Context context){

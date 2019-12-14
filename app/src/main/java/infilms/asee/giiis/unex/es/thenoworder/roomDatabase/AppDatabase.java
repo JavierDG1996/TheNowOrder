@@ -7,8 +7,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
+import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
 
-@Database(entities = {Order.class}, version = 2)
+@Database(entities = {Order.class, Product.class}, version = 3)
 public abstract class AppDatabase  extends RoomDatabase {
 
     private static AppDatabase instance;
@@ -30,4 +31,6 @@ public abstract class AppDatabase  extends RoomDatabase {
     }
 
     public abstract OrderDao orderDao();
+
+    public abstract ProductDao productDao();
 }
