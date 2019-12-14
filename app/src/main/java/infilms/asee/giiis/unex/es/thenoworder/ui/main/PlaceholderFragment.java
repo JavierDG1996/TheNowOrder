@@ -1,16 +1,10 @@
 package infilms.asee.giiis.unex.es.thenoworder.ui.main;
 
-import android.annotation.SuppressLint;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,12 +13,14 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import infilms.asee.giiis.unex.es.thenoworder.R;
 import infilms.asee.giiis.unex.es.thenoworder.adapters.ProductAdapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
 import infilms.asee.giiis.unex.es.thenoworder.utilities.InjectorUtils;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -40,17 +36,25 @@ public class PlaceholderFragment extends Fragment {
     //Almacenar los productos en el bundle a través de la variable PRODUCT_LIST
     public static PlaceholderFragment newInstance(int num) {
         PlaceholderFragment fragment = new PlaceholderFragment();
+
         Bundle bundle = new Bundle();
         //Guardar la posición actual de la pestaña
         bundle.putInt("Numtab",num);
         fragment.setArguments(bundle);
-        fragment.setNumTab(num);
+
         return fragment;
     }
 
+
+    /*
+    * Cambia el valor de la varaible numTab
+    * Numtan indica cual es la posición de la instancia en
+    * las pestañas
+    * */
     private void setNumTab(int numTab) {
         this.numTab = numTab;
     }
+
 
     @Override
     public View onCreateView(
@@ -66,7 +70,7 @@ public class PlaceholderFragment extends Fragment {
 
         if(getContext() != null) {
             ProductViewModelFactory factory = InjectorUtils.provideProductViewModelFactory(getContext());
-            this.productVM = ViewModelProviders.of(getActivity(), factory).get(ProductViewModel.class);
+            this.productVM = ViewModelProviders.of(Objects.requireNonNull(getActivity()), factory).get(ProductViewModel.class);
         }
         LinearLayoutManager LLManager = new LinearLayoutManager(this.getContext());
         LLManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -76,10 +80,11 @@ public class PlaceholderFragment extends Fragment {
         return root;
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        List<Product> productList = new ArrayList<Product>();
+        List<Product> productList = new ArrayList<>();
 
         //Deginir Adapter
         productAdapter = new ProductAdapter(this.getContext(), productList, this.getActivity());
@@ -120,6 +125,8 @@ public class PlaceholderFragment extends Fragment {
         }
 
     }
+
+
     /*
     * Sirve para pintar la lista que se le pase por parametros
     * Se usa cuando se produce algun cambio como la rotación
