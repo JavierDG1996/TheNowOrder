@@ -1,23 +1,22 @@
 package infilms.asee.giiis.unex.es.thenoworder.ui.activitySelectTable;
 
 import android.content.Context;
-import androidx.lifecycle.LiveData;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
+
 import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
 
-public class SelectTableViewModel extends ViewModel {
+class SelectTableViewModel extends ViewModel {
 
-    private final repositoryPtt mRepository;
     private LiveData<Integer> mesas;
 
-    public SelectTableViewModel(Context context, repositoryPtt repository) {
-        this.mRepository = repository;
+    SelectTableViewModel(Context context, repositoryPtt repository) {
 
-        this.mesas = mRepository.getTables(context);
+        this.mesas = repository.getTables(context);
     }
 
-    public LiveData<Integer> getTables() {
+    LiveData<Integer> getTables() {
         return this.mesas;
     }
 }

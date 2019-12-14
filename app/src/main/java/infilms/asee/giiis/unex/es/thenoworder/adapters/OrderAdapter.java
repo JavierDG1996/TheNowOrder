@@ -2,7 +2,6 @@ package infilms.asee.giiis.unex.es.thenoworder.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +9,17 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
 import infilms.asee.giiis.unex.es.thenoworder.PayBillActivity;
 import infilms.asee.giiis.unex.es.thenoworder.R;
 import infilms.asee.giiis.unex.es.thenoworder.RecordDetailsActivity;
-import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.SummaryOrderActivity;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
+import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.SummaryOrderActivity;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> {
 
@@ -55,37 +55,28 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
 
 
         if(!IsPaidOrders) {
-            holder.pay_order.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, PayBillActivity.class);
-                    intent.putExtra(context.getString(R.string.intentOrder), orderList.get(position).getId_order());
-                    context.startActivity(intent);
+            holder.pay_order.setOnClickListener(view -> {
+                Intent intent = new Intent(context, PayBillActivity.class);
+                intent.putExtra(context.getString(R.string.intentOrder), orderList.get(position).getId_order());
+                context.startActivity(intent);
 
 
-                }
             });
 
-            holder.edit_order.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, SummaryOrderActivity.class);
-                    intent.putExtra(context.getString(R.string.intentOrder), orderList.get(position).getId_order());
-                    intent.putExtra(context.getString(R.string.intentIsInsert), false);
+            holder.edit_order.setOnClickListener(view -> {
+                Intent intent = new Intent(context, SummaryOrderActivity.class);
+                intent.putExtra(context.getString(R.string.intentOrder), orderList.get(position).getId_order());
+                intent.putExtra(context.getString(R.string.intentIsInsert), false);
 
-                    context.startActivity(intent);
-                }
+                context.startActivity(intent);
             });
         }else {
-           holder.record_order.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, RecordDetailsActivity.class);
-                    intent.putExtra(context.getString(R.string.intentOrder), orderList.get(position).getId_order());
+           holder.record_order.setOnClickListener(view -> {
+               Intent intent = new Intent(context, RecordDetailsActivity.class);
+               intent.putExtra(context.getString(R.string.intentOrder), orderList.get(position).getId_order());
 
-                    context.startActivity(intent);
-                }
-            });
+               context.startActivity(intent);
+           });
         }
 
     }
@@ -142,7 +133,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         return this.orderList.size();
     }
 
-    public static class  MyViewHolder extends RecyclerView.ViewHolder{//Los adaptadores de Recycler view deben contener una clase que extienda de viewHolder
+    static class  MyViewHolder extends RecyclerView.ViewHolder{//Los adaptadores de Recycler view deben contener una clase que extienda de viewHolder
         //Creamos las variables
         TextView order_price;
         TextView order_table;
@@ -153,7 +144,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
 
 
         //constructor de clase interna y vinculamos los atributos
-        public MyViewHolder(View view){
+        MyViewHolder(View view){
             super(view);
 
             order_price = view.findViewById(R.id.order_price);

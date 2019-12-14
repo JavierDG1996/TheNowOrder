@@ -5,6 +5,7 @@
 
 
     <EditTextPreference
+        android:id="@+id/Nmesas"
         android:inputType="number"
         android:defaultValue="9"
         android:textColor="?attr/textcolor"

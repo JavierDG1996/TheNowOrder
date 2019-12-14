@@ -1,45 +1,33 @@
 package infilms.asee.giiis.unex.es.thenoworder;
 
 import android.content.Intent;
-
 import android.os.Bundle;
-
-import com.google.android.material.tabs.TabLayout;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
-
-
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
-import infilms.asee.giiis.unex.es.thenoworder.API.NetworkingAndroidHttpClientJSON;
-import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
 import infilms.asee.giiis.unex.es.thenoworder.ui.main.SectionsPagerAdapter;
 
 
 public class NewOrderTabbedActivity extends AppCompatActivity {
 
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    private ViewPager mViewPager;
-
     private ArrayList<Product> product_order;
-
-    NetworkingAndroidHttpClientJSON api;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_order_tabbed);
+
         getIntentData();
         init();
         manageTabs();
@@ -60,6 +48,7 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setTitle(getResources().getString(R.string.product_chart));
 
         actionBar.setHomeButtonEnabled(true);
@@ -77,9 +66,9 @@ public class NewOrderTabbedActivity extends AppCompatActivity {
     public void manageTabs(){
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
 
-        mViewPager = findViewById(R.id.container);
+        ViewPager mViewPager = findViewById(R.id.container);
         mViewPager.setOffscreenPageLimit(2);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 

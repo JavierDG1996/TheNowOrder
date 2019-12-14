@@ -1,26 +1,22 @@
 package infilms.asee.giiis.unex.es.thenoworder.ui.gallery;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+import java.util.Objects;
+
 import infilms.asee.giiis.unex.es.thenoworder.R;
 import infilms.asee.giiis.unex.es.thenoworder.adapters.OrderAdapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
-import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.AppDatabase;
 import infilms.asee.giiis.unex.es.thenoworder.utilities.InjectorUtils;
 
 
@@ -29,8 +25,6 @@ public class GalleryFragment extends Fragment {
     private List<Order> orderList;
     private RecyclerView order_list_rv;
     private int mPosition = RecyclerView.NO_POSITION;
-
-    private GalleryViewModel galleryViewModel;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -52,9 +46,9 @@ public class GalleryFragment extends Fragment {
         this.order_list_rv.setAdapter(O_adapter);
 
         GalleryViewModelFactory factory = InjectorUtils.provideGalleryViewModelFactory(this.getContext());
-        this.galleryViewModel = ViewModelProviders.of(getActivity(),factory).get(GalleryViewModel.class);
+        GalleryViewModel galleryViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity()), factory).get(GalleryViewModel.class);
 
-        this.galleryViewModel.getPaidOrders().observe(this,PaidOrders->{
+        galleryViewModel.getPaidOrders().observe(this, PaidOrders->{
             O_adapter.swapOrderList(PaidOrders);
             if (mPosition == RecyclerView.NO_POSITION) mPosition = 0;
             this.order_list_rv.smoothScrollToPosition(mPosition);

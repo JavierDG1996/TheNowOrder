@@ -17,23 +17,12 @@ public class Table {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public int getNumber() {
         return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
     }
 
     public int getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(int thumbnail) {
-        this.thumbnail = thumbnail;
-    }
 }

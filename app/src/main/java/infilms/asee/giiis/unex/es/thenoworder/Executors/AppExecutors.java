@@ -1,12 +1,12 @@
 package infilms.asee.giiis.unex.es.thenoworder.Executors;
 
-import android.os.Looper;
 import android.os.Handler;
+import android.os.Looper;
+
+import androidx.annotation.NonNull;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-
-import androidx.annotation.NonNull;
 
 public class AppExecutors {
 
@@ -37,10 +37,6 @@ public class AppExecutors {
 
     public Executor getDiskIO() {
         return diskIO;
-    }
-
-    public Executor getMainThread() {
-        return mainThread;
     }
 
     public Executor getNetworkIO() {

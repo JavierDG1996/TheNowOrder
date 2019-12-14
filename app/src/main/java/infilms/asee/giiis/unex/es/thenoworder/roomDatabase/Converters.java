@@ -1,12 +1,13 @@
 package infilms.asee.giiis.unex.es.thenoworder.roomDatabase;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
+import androidx.room.TypeConverter;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import androidx.room.TypeConverter;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
 
 public class Converters {
@@ -20,7 +21,6 @@ public class Converters {
     @TypeConverter
     public static String product2string(ArrayList<Product> products){
         Gson gson = new Gson();
-        String json = gson.toJson(products);
-        return json;
+        return gson.toJson(products);
     }
 }

@@ -17,14 +17,10 @@ import java.net.URL;
  * Centro: Escuela politécnica - Universidad de Extremadura
  * Alumno: Manuel Sánchez Mostazo */
 
-public class NetworkUtils {
-
-    public static URL buildURL(String baseURL, String[] segments) {
-        return buildURL(baseURL, segments, null, null);
-    }
+class NetworkUtils {
 
     @SafeVarargs
-    public static URL buildURL(String baseURL, String[] segments, Pair<String, String>... params) {
+    static URL buildURL(String baseURL, String[] segments, Pair<String, String>... params) {
 
         Uri.Builder builder = new Uri.Builder();
 
@@ -48,7 +44,7 @@ public class NetworkUtils {
         }
     }
 
-    public static String getResponse(URL url) {
+    private static String getResponse(URL url) {
 
         HttpURLConnection urlConnection = null;
         BufferedReader bufferedReader;
@@ -77,7 +73,7 @@ public class NetworkUtils {
         return stringBuilder.toString();
     }
 
-    public static JSONObject getJSONResponse (URL url) {
+    static JSONObject getJSONResponse(URL url) {
         String result = getResponse(url);
 
         if(!result.equals("null")) {

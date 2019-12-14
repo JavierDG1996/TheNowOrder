@@ -1,13 +1,14 @@
 package infilms.asee.giiis.unex.es.thenoworder.classes;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
 import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.Converters;
 
 @Entity(tableName = "Order")
@@ -68,10 +69,6 @@ public class Order implements Serializable {
 
     public ArrayList<Product> getProduct_list() {
         return product_list;
-    }
-
-    public void setProduct_list(ArrayList<Product> product_list) {
-        this.product_list = product_list;
     }
 
     public Boolean getPaid_order() {

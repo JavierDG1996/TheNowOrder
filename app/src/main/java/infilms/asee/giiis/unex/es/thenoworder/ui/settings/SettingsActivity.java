@@ -1,13 +1,11 @@
 package infilms.asee.giiis.unex.es.thenoworder.ui.settings;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import infilms.asee.giiis.unex.es.thenoworder.R;
-import infilms.asee.giiis.unex.es.thenoworder.ui.settings.SettingsFragment;
-
-
-import android.os.Bundle;
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -33,6 +31,7 @@ public class SettingsActivity extends AppCompatActivity {
     public void init(){
         ActionBar actionBar = getSupportActionBar();
 
+        assert actionBar != null;
         actionBar.setTitle(getResources().getString(R.string.settings));
 
         actionBar.setHomeButtonEnabled(true);

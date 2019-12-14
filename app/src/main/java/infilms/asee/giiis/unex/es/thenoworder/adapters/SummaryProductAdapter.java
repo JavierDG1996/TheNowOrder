@@ -2,18 +2,17 @@ package infilms.asee.giiis.unex.es.thenoworder.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import infilms.asee.giiis.unex.es.thenoworder.R;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
@@ -51,13 +50,7 @@ public class SummaryProductAdapter extends RecyclerView.Adapter<SummaryProductAd
         holder.product_price.setText(String.valueOf(product_list.get(position).getProduct_price()));
 
         if(CanIInteract) {
-            holder.product_description.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    showDeleteTakeDialog(product_list.get(position).getProduct_name(), position);
-
-                }
-            });
+            holder.product_description.setOnClickListener(view -> showDeleteTakeDialog(product_list.get(position).getProduct_name(), position));
         }
 
 
@@ -69,7 +62,7 @@ public class SummaryProductAdapter extends RecyclerView.Adapter<SummaryProductAd
             return product_list.size();
     }
 
-        public static class  MyViewHolder extends RecyclerView.ViewHolder{//Los adaptadores de Recycler view deben contener una clase que extienda de viewHolder
+        static class  MyViewHolder extends RecyclerView.ViewHolder{//Los adaptadores de Recycler view deben contener una clase que extienda de viewHolder
             //Creamos las variables
             TextView product_name;
             TextView product_price;
@@ -77,7 +70,7 @@ public class SummaryProductAdapter extends RecyclerView.Adapter<SummaryProductAd
 
 
             //constructor de clase interna y vinculamos los atributos
-            public MyViewHolder(View view){
+            MyViewHolder(View view){
                 super(view);
 
                 product_name = view.findViewById(R.id.product_name);
@@ -91,19 +84,11 @@ public class SummaryProductAdapter extends RecyclerView.Adapter<SummaryProductAd
             final AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext );
             String title = mContext.getString(R.string.delete_product_question) + " " + productName;
 
-            alertDialog.setTitle(title).setPositiveButton(mContext.getString(R.string.delete), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    product_list.remove(position);
-                    order.calculateTotalPrice();
-                    notifyDataSetChanged();
-                }
-            }).setNegativeButton(mContext.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
-                }
-            }).show();
+            alertDialog.setTitle(title).setPositiveButton(mContext.getString(R.string.delete), (dialogInterface, i) -> {
+                product_list.remove(position);
+                order.calculateTotalPrice();
+                notifyDataSetChanged();
+            }).setNegativeButton(mContext.getString(R.string.cancel), (dialogInterface, i) -> dialogInterface.cancel()).show();
 
         }
 

@@ -5,11 +5,12 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import infilms.asee.giiis.unex.es.thenoworder.API.NetworkingAndroidHttpClientJSON;
 import infilms.asee.giiis.unex.es.thenoworder.Executors.AppExecutors;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
@@ -41,7 +42,7 @@ public class repositoryPtt {
      * @param c Activity context from where we are instantiating the repository
      */
     private repositoryPtt(Context c, OrderDao mOrderDao, AppExecutors mAppExecutors){
-        api= new NetworkingAndroidHttpClientJSON();
+        api= new NetworkingAndroidHttpClientJSON(mAppExecutors);
         this.mOrderDao = mOrderDao;
         this.mAppExecutors = mAppExecutors;
         this.FoodList = new MutableLiveData<>();
@@ -153,6 +154,7 @@ public class repositoryPtt {
         String mesas_string = sharedPreferences.getString(SettingsFragment.KEY_PREF_MESA,"0");
 
         MutableLiveData<Integer> mesas = new MutableLiveData<>();
+        assert mesas_string != null;
         mesas.setValue(Integer.parseInt(mesas_string));
 
         return mesas;
@@ -179,21 +181,15 @@ public class repositoryPtt {
     }
 
     public void deleteOrder(Order order){
-        mAppExecutors.getDiskIO().execute(()->{
-            mOrderDao.deleteOrder(order);
-        });
+        mAppExecutors.getDiskIO().execute(()-> mOrderDao.deleteOrder(order));
     }
 
     public void updateOrder(Order order){
-        mAppExecutors.getDiskIO().execute(()->{
-            mOrderDao.updateOrder(order);
-        });
+        mAppExecutors.getDiskIO().execute(()-> mOrderDao.updateOrder(order));
     }
 
     public void addOrder(Order order){
-        mAppExecutors.getDiskIO().execute(()->{
-            mOrderDao.addOrder(order);
-        });
+        mAppExecutors.getDiskIO().execute(()-> mOrderDao.addOrder(order));
     }
 
 }

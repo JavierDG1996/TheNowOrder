@@ -8,16 +8,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
 import infilms.asee.giiis.unex.es.thenoworder.R;
-import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.SummaryOrderActivity;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Table;
+import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.SummaryOrderActivity;
 
 public class Table_List_Adapter extends RecyclerView.Adapter<Table_List_Adapter.MyViewHolder> {
 
@@ -50,14 +49,11 @@ public class Table_List_Adapter extends RecyclerView.Adapter<Table_List_Adapter.
         holder.img_table.setImageResource(table_list.get(position).getThumbnail());
 
         //añadimos el click listener
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Intent intent = new Intent(mContext, NewOrderTabbedActivity.class);
-                Intent intent = new Intent(mContext, SummaryOrderActivity.class);
-                intent.putExtra(mContext.getString(R.string.intentNumTable), table_list.get(position).getNumber());
-                mContext.startActivity(intent);
-            }
+        holder.cardView.setOnClickListener(view -> {
+            //Intent intent = new Intent(mContext, NewOrderTabbedActivity.class);
+            Intent intent = new Intent(mContext, SummaryOrderActivity.class);
+            intent.putExtra(mContext.getString(R.string.intentNumTable), table_list.get(position).getNumber());
+            mContext.startActivity(intent);
         });
     }
 
@@ -66,14 +62,14 @@ public class Table_List_Adapter extends RecyclerView.Adapter<Table_List_Adapter.
         return table_list.size();
     }
 
-    public static class  MyViewHolder extends RecyclerView.ViewHolder{//Los adaptadores de Recycler view deben contener una clase que extienda de viewHolder
+    static class  MyViewHolder extends RecyclerView.ViewHolder{//Los adaptadores de Recycler view deben contener una clase que extienda de viewHolder
         //Creamos las variables
         TextView tv_table_title;
         ImageView img_table;
         CardView cardView;
 
         //constructor de clase interna y vinculamos los atributos
-        public MyViewHolder(View view){
+        MyViewHolder(View view){
             super(view);
 
             tv_table_title = view.findViewById(R.id.table_number_id);

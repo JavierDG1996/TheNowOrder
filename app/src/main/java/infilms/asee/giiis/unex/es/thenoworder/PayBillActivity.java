@@ -1,27 +1,25 @@
 package infilms.asee.giiis.unex.es.thenoworder;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.SummaryOrderViewModel;
-import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.SummaryOrderViewModelFactory;
+
 import infilms.asee.giiis.unex.es.thenoworder.adapters.SummaryProductAdapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
+import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.SummaryOrderViewModel;
+import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.SummaryOrderViewModelFactory;
 import infilms.asee.giiis.unex.es.thenoworder.utilities.InjectorUtils;
-
-
-import android.content.Intent;
-
-import android.os.Bundle;
-
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 public class PayBillActivity extends AppCompatActivity {
 
@@ -38,23 +36,22 @@ public class PayBillActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_bill);
 
         getIntentOrder();
         init();
 
-        this.total_price = (TextView) findViewById(R.id.total_price_bill_tv);
+        this.total_price = findViewById(R.id.total_price_bill_tv);
 
 
-        this.bill_message = (TextView) findViewById(R.id.msg_bill_tv);
+        this.bill_message = findViewById(R.id.msg_bill_tv);
 
-        this.cash= (EditText) findViewById(R.id.introduce_cash_et);
+        this.cash= findViewById(R.id.introduce_cash_et);
 
-        this.pay_bill =(Button) findViewById(R.id.pay_bill_button);
+        this.pay_bill = findViewById(R.id.pay_bill_button);
 
-        this.bill_product_list = (RecyclerView) findViewById(R.id.rv_record_product_list);
+        this.bill_product_list = findViewById(R.id.rv_record_product_list);
 
         SummaryOrderViewModelFactory factory = InjectorUtils.provideSummartOrderViewModelFactory(this,id_order);
         this.summaryOrderViewModel = ViewModelProviders.of(this,factory).get(SummaryOrderViewModel.class);
@@ -76,9 +73,6 @@ public class PayBillActivity extends AppCompatActivity {
             this.bill_product_list.setAdapter(SP_adapter);
         });
 
-
-
-
         this.cash.addTextChangedListener(ShowTextAndButton);
 
         manageButton();
@@ -94,6 +88,7 @@ public class PayBillActivity extends AppCompatActivity {
     public void init(){
         ActionBar actionBar = getSupportActionBar();
 
+        assert actionBar != null;
         actionBar.setTitle(getResources().getString(R.string.pay_bill_activity));
 
         actionBar.setHomeButtonEnabled(true);
@@ -107,19 +102,20 @@ public class PayBillActivity extends AppCompatActivity {
 
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             if (cash.getText().toString().length() > 0){
 
-                Float cashInput = Float.parseFloat(cash.getText().toString().trim());
-                Float resultado = cashInput - order.getTotal_price();
+                float cashInput = Float.parseFloat(cash.getText().toString().trim());
+                float resultado = cashInput - order.getTotal_price();
 
                 if (resultado >= 0) {
                     bill_message.setText("El cambio es de " + resultado);
                     pay_bill.setEnabled(true);
                 } else {
-                    bill_message.setText("La catidad no es suficiente");
+                    bill_message.setText("La cantidad no es suficiente");
                     pay_bill.setEnabled(false);
                 }
             }else{
@@ -137,13 +133,10 @@ public class PayBillActivity extends AppCompatActivity {
     };
 
     public void manageButton(){
-        this.pay_bill.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                order.setPaid_order(true);
-                summaryOrderViewModel.updateOrder();
-                finish();
-            }
+        this.pay_bill.setOnClickListener(view -> {
+            order.setPaid_order(true);
+            summaryOrderViewModel.updateOrder();
+            finish();
         });
     }
 

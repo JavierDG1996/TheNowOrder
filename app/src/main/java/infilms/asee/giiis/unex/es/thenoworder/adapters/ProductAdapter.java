@@ -7,11 +7,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
 import infilms.asee.giiis.unex.es.thenoworder.NewOrderTabbedActivity;
 import infilms.asee.giiis.unex.es.thenoworder.R;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
@@ -47,12 +48,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         holder.product_name.setText(product_list.get(position).getProduct_name());
         holder.product_price.setText(String.valueOf(product_list.get(position).getProduct_price()));
 
-        holder.product_description.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NewOrderTabbedActivity activity = (NewOrderTabbedActivity) fragmentActivity;
-                activity.addProductToOrder(product_list.get(position));
-            }
+        holder.product_description.setOnClickListener(view -> {
+            NewOrderTabbedActivity activity = (NewOrderTabbedActivity) fragmentActivity;
+            activity.addProductToOrder(product_list.get(position));
         });
     }
 
@@ -63,7 +61,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         return 0;
     }
 
-    public static class  MyViewHolder extends RecyclerView.ViewHolder{//Los adaptadores de Recycler view deben contener una clase que extienda de viewHolder
+    static class  MyViewHolder extends RecyclerView.ViewHolder{//Los adaptadores de Recycler view deben contener una clase que extienda de viewHolder
         //Creamos las variables
         TextView product_name;
         TextView product_price;
@@ -71,7 +69,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
 
         //constructor de clase interna y vinculamos los atributos
-        public MyViewHolder(View view){
+        MyViewHolder(View view){
             super(view);
 
             product_name = view.findViewById(R.id.product_name);

@@ -1,25 +1,22 @@
 package infilms.asee.giiis.unex.es.thenoworder;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.SummaryOrderViewModel;
-import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.SummaryOrderViewModelFactory;
+
 import infilms.asee.giiis.unex.es.thenoworder.adapters.SummaryProductAdapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
+import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.SummaryOrderViewModel;
+import infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder.SummaryOrderViewModelFactory;
 import infilms.asee.giiis.unex.es.thenoworder.utilities.InjectorUtils;
-
-
-import android.content.Intent;
-
-
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class RecordDetailsActivity extends AppCompatActivity {
 
@@ -33,30 +30,21 @@ public class RecordDetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_details);
-
 
         getIntentOrder();
         init();
 
+        this.total_price = findViewById(R.id.record_total_price_tv);
 
+        this.table = findViewById(R.id.record_table_tv);
 
-        this.total_price = (TextView) findViewById(R.id.record_total_price_tv);
+        this.id = findViewById(R.id.record_id_tv);
 
+        this.delete_record =findViewById(R.id.delete_record_button);
 
-        this.table = (TextView) findViewById(R.id.record_table_tv);
-
-
-        this.id = (TextView) findViewById(R.id.record_id_tv);
-
-
-
-        this.delete_record =(Button) findViewById(R.id.delete_record_button);
-
-        this.record_product_list = (RecyclerView) findViewById(R.id.rv_record_product_list);
+        this.record_product_list =findViewById(R.id.rv_record_product_list);
 
 
         SummaryOrderViewModelFactory factory = InjectorUtils.provideSummartOrderViewModelFactory(this,id_order);
@@ -97,6 +85,7 @@ public class RecordDetailsActivity extends AppCompatActivity {
     public void init(){
         ActionBar actionBar = getSupportActionBar();
 
+        assert actionBar != null;
         actionBar.setTitle(getResources().getString(R.string.record_order_activity));
 
         actionBar.setHomeButtonEnabled(true);
@@ -105,12 +94,9 @@ public class RecordDetailsActivity extends AppCompatActivity {
     }
 
     public void manageButton(){
-        this.delete_record.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                summaryOrderViewModel.deleteOrder();
-                finish();
-            }
+        this.delete_record.setOnClickListener(view -> {
+            summaryOrderViewModel.deleteOrder();
+            finish();
         });
     }
 

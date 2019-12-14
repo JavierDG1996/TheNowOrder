@@ -1,11 +1,23 @@
 package infilms.asee.giiis.unex.es.thenoworder.ui.activitySummaryOrder;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.Objects;
+
 import infilms.asee.giiis.unex.es.thenoworder.MainActivity;
 import infilms.asee.giiis.unex.es.thenoworder.NewOrderTabbedActivity;
 import infilms.asee.giiis.unex.es.thenoworder.R;
@@ -13,20 +25,6 @@ import infilms.asee.giiis.unex.es.thenoworder.adapters.SummaryProductAdapter;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
 import infilms.asee.giiis.unex.es.thenoworder.utilities.InjectorUtils;
-
-
-import android.content.Intent;
-
-import android.os.Bundle;
-
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
 
 public class SummaryOrderActivity extends AppCompatActivity {
 
@@ -70,8 +68,10 @@ public class SummaryOrderActivity extends AppCompatActivity {
     public void init(){
         ActionBar actionBar = getSupportActionBar();
         if(this.insert){
+            assert actionBar != null;
             actionBar.setTitle(getResources().getString(R.string.create_order));
         }else{
+            assert actionBar != null;
             actionBar.setTitle(getResources().getString(R.string.update_order));
         }
         actionBar.setHomeButtonEnabled(true);
@@ -83,10 +83,7 @@ public class SummaryOrderActivity extends AppCompatActivity {
         this.order_products = findViewById(R.id.order_summary_products);
         add_new_product = this.findViewById(R.id.add_new_product);
 
-
-
         if(this.insert){
-
             CreateOrderViewModelFactory factory = InjectorUtils.provideCreateOrderViewModelFactory(this,order);
             this.createOrderViewModel = ViewModelProviders.of(this,factory).get(CreateOrderViewModel.class);
             //Si se está insertando el pedido utiliza el pedido que se ha creado en el momento
@@ -99,9 +96,7 @@ public class SummaryOrderActivity extends AppCompatActivity {
              */
             this.order_products.setHasFixedSize(true);
             this.order_products.setAdapter(SP_adapter);
-
         }else{
-
             //Si se está actualizando el pedido se debe recuperar utilizando el identificador del pedido
 
             SummaryOrderViewModelFactory factory = InjectorUtils.provideSummartOrderViewModelFactory(this,id_order);
@@ -119,34 +114,28 @@ public class SummaryOrderActivity extends AppCompatActivity {
                 this.order_products.setHasFixedSize(true);
                 this.order_products.setAdapter(SP_adapter);
             });
-
-
         }
     }
 
     private void manageButtons() {
 
-        this.add_new_product.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), NewOrderTabbedActivity.class);
-                intent.putExtra(getString(R.string.intentProducts), order.getProduct_list());
-                startActivityForResult(intent, ADD_PRODUCT_ORDER);
-            }
+        this.add_new_product.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), NewOrderTabbedActivity.class);
+            intent.putExtra(getString(R.string.intentProducts), order.getProduct_list());
+            startActivityForResult(intent, ADD_PRODUCT_ORDER);
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        switch (requestCode){
-            case ADD_PRODUCT_ORDER:{
-                if(resultCode == RESULT_OK){
-                    order.getProduct_list().clear();
-                    order.getProduct_list().addAll((ArrayList<Product>) data.getSerializableExtra(getString(R.string.intentProducts)));
-                    order_products.getAdapter().notifyDataSetChanged();
-                }
-                break;
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_PRODUCT_ORDER) {
+            if (resultCode == RESULT_OK) {
+                order.getProduct_list().clear();
+                assert data != null;
+                order.getProduct_list().addAll((ArrayList<Product>) data.getSerializableExtra(getString(R.string.intentProducts)));
+                Objects.requireNonNull(order_products.getAdapter()).notifyDataSetChanged();
             }
         }
     }
@@ -183,7 +172,7 @@ public class SummaryOrderActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.add_order) {
             this.order.calculateTotalPrice();
-            Toast.makeText(this,"Numero productos "+this.order_products.getAdapter().getItemCount(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Numero productos "+ Objects.requireNonNull(this.order_products.getAdapter()).getItemCount(),Toast.LENGTH_SHORT).show();
             if(this.insert){
                 createOrderViewModel.addOrder();
                 finishAffinity(); //Este método finaliza la actividad, así como todas las actividades debajo de ella en la tarea actual que tengan la misma afinidad.
