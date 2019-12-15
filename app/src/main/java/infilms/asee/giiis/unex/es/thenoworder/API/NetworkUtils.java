@@ -13,10 +13,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/* Trabajo de fin de grado - inFilms
- * Centro: Escuela politécnica - Universidad de Extremadura
- * Alumno: Manuel Sánchez Mostazo */
-
 class NetworkUtils {
 
     @SafeVarargs

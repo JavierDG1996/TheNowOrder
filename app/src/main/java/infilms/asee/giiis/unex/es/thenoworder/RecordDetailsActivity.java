@@ -20,7 +20,7 @@ import infilms.asee.giiis.unex.es.thenoworder.utilities.InjectorUtils;
 
 public class RecordDetailsActivity extends AppCompatActivity {
 
-    private TextView total_price, table, id;
+    private TextView total_price, table;
     private Button delete_record;
     private RecyclerView record_product_list;
     private Order order;
@@ -40,8 +40,6 @@ public class RecordDetailsActivity extends AppCompatActivity {
 
         this.table = findViewById(R.id.record_table_tv);
 
-        this.id = findViewById(R.id.record_id_tv);
-
         this.delete_record =findViewById(R.id.delete_record_button);
 
         this.record_product_list =findViewById(R.id.rv_record_product_list);
@@ -56,8 +54,6 @@ public class RecordDetailsActivity extends AppCompatActivity {
             if(this.order != null) {
                 this.total_price.setText(String.valueOf(order.getTotal_price()));
                 this.table.setText(String.valueOf(order.getTable()));
-                this.id.setText(String.valueOf(order.getId_order()));
-                Toast.makeText(this, "Id: " + order.getId_order(), Toast.LENGTH_SHORT).show();
 
 
                 SummaryProductAdapter SP_adapter = new SummaryProductAdapter(this, this.order.getProduct_list(), this.order, false);

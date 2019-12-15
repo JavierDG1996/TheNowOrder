@@ -9,7 +9,6 @@ import infilms.asee.giiis.unex.es.thenoworder.R;
 
 public class SettingsFragment extends PreferenceFragment {
 
-    //public static final String KEY_PREF_NIGHTMODE = "pref_nightmode";
     public static final String KEY_PREF_MESA = "pref_tables";
 
 

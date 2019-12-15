@@ -86,7 +86,7 @@ public class PlaceholderFragment extends Fragment {
 
         List<Product> productList = new ArrayList<>();
 
-        //Deginir Adapter
+        //Definir Adapter
         productAdapter = new ProductAdapter(this.getContext(), productList, this.getActivity());
 
         /* Definir observers, se definen:

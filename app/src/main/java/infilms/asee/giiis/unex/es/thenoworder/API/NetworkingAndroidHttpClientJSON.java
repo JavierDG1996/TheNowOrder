@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -57,12 +56,6 @@ public class NetworkingAndroidHttpClientJSON {
         foodList= new MutableLiveData<>();
         drinkList= new MutableLiveData<>();
         dessertList= new MutableLiveData<>();
-
-        //mAppExecutors.getNetworkIO().execute(() -> {
-            //this.loadFood();
-            //this.loadDessert();
-            //this.loadDrink();
-        //});
     }
 
     /*
@@ -139,7 +132,6 @@ public class NetworkingAndroidHttpClientJSON {
     private void jsonToListFood(JSONObject responseObject) {
 
         List<Product> productList = new ArrayList<>();
-        Random r = new Random();
         float price;
         String nameProduct;
         JSONArray Products;
@@ -151,7 +143,6 @@ public class NetworkingAndroidHttpClientJSON {
             for (int idx = 0; idx < Products.length(); idx++) {
                 // Get single Product data - a Map
                 JSONObject Product = (JSONObject) Products.get(idx);
-                //price = r.nextInt(30);
                 price =(float)(3*idx+2)/5+13;
                 nameProduct = Product.get("title").toString();
                 Product ProductObj = new Product(nameProduct, price,"Food");
@@ -217,7 +208,6 @@ public class NetworkingAndroidHttpClientJSON {
     private void jsonToListDessert(JSONObject responseObject) {
 
         List<Product> productList = new ArrayList<>();
-        Random r = new Random();
         float price;
         String nameProduct;
         JSONArray Products;
@@ -228,7 +218,6 @@ public class NetworkingAndroidHttpClientJSON {
             for (int idx = 0; idx < Products.length(); idx++) {
                 // Get single Product data - a Map
                 JSONObject Product = (JSONObject) Products.get(idx);
-                //price = r.nextInt(30);
                 price =(float)(3*idx+2)/5+5;
                 nameProduct = Product.get("title").toString();
                 Product ProductObj = new Product(nameProduct, price,"Dessert");
@@ -264,7 +253,6 @@ public class NetworkingAndroidHttpClientJSON {
             result = NetworkUtils.getJSONResponse(queryURL);
 
             if (result != null) {
-                //Log.v("Lista de bebidas", "Getting response from the API");
                 jsonToListDrink(result);
             }
         });
@@ -277,25 +265,21 @@ public class NetworkingAndroidHttpClientJSON {
     private void jsonToListDrink(JSONObject responseObject) {
 
         List<Product> productList = new ArrayList<>();
-        Random r = new Random();
         float price;
         String nameProduct;
         JSONArray Products;
         try {
 
             Products = responseObject.getJSONArray("drinks");
-            //Products.length()
             for (int idx = 0; idx < 15; idx++) {
                 // Get single Product data - a Map
                 JSONObject Product = (JSONObject) Products.get(idx);
-                //price = r.nextInt(30);
                 price =(float)(3*idx+2)/5+2;
                 nameProduct = Product.get("strDrink").toString();
                 Product ProductObj = new Product(nameProduct, price,"Drinks");
 
                 productList.add(ProductObj);
 
-                //Log.v("Nombre producto= ", nameProduct);
             }
 
             drinkList.postValue(productList);

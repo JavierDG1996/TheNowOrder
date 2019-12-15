@@ -21,10 +21,4 @@ class CreateOrderViewModel  extends ViewModel {
     void addOrder(){
         mRepository.addOrder(order);
     }
-
-
-
-    /*public LiveData<Order> getOrder() {
-        return this.order;
-    }*/
 }

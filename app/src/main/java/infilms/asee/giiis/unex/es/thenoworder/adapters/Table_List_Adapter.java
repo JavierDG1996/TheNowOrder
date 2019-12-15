@@ -50,7 +50,6 @@ public class Table_List_Adapter extends RecyclerView.Adapter<Table_List_Adapter.
 
         //añadimos el click listener
         holder.cardView.setOnClickListener(view -> {
-            //Intent intent = new Intent(mContext, NewOrderTabbedActivity.class);
             Intent intent = new Intent(mContext, SummaryOrderActivity.class);
             intent.putExtra(mContext.getString(R.string.intentNumTable), table_list.get(position).getNumber());
             mContext.startActivity(intent);

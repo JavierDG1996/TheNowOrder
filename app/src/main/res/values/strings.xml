@@ -9,9 +9,6 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_record">Historial</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_tools">Tools</string>
-    <string name="menu_share">Share</string>
     <string name="menu_authors">Acerca de</string>
 
     <string name="select_table_string">Selecciona una mesa</string>

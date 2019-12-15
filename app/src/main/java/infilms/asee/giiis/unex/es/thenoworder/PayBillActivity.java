@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -110,6 +113,10 @@ public class PayBillActivity extends AppCompatActivity {
 
                 float cashInput = Float.parseFloat(cash.getText().toString().trim());
                 float resultado = cashInput - order.getTotal_price();
+
+                BigDecimal bd = new BigDecimal(resultado);//Truncamos el precio total a dos decimales
+                bd = bd.setScale(2, RoundingMode.HALF_UP);
+                resultado = bd.floatValue();
 
                 if (resultado >= 0) {
                     bill_message.setText("El cambio es de " + resultado);

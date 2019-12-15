@@ -22,13 +22,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     private static final int[] TAB_TITLES = new int[]{R.string.drinks, R.string.foods, R.string.desserts};
     private Fragment[] tabs;
     private Context mContext;
-    //private List<PlaceholderFragment> fragments;
 
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
         tabs= new Fragment[3];
-        //fragments= new ArrayList<>();
     }
     @Override
     public Fragment getItem(int position) {
@@ -44,7 +42,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        // Show 2 total pages.
         return TAB_TITLES.length;
     }
 

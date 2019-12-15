@@ -3,12 +3,10 @@ package infilms.asee.giiis.unex.es.thenoworder.repository;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import infilms.asee.giiis.unex.es.thenoworder.API.NetworkingAndroidHttpClientJSON;
@@ -22,6 +20,7 @@ import infilms.asee.giiis.unex.es.thenoworder.ui.settings.SettingsFragment;
 public class repositoryPtt {
     private static final Object LOCK = new Object();
     private static repositoryPtt instance;
+    private Context mContext;
 
     private final OrderDao mOrderDao;
     private final ProductDao mProductDao;
@@ -37,7 +36,6 @@ public class repositoryPtt {
     private MutableLiveData<List<Product>> DrinkList;
     private MutableLiveData<List<Product>> DessertList;
 
-    private boolean mInitialized = false;
 
 
     /**
@@ -47,6 +45,7 @@ public class repositoryPtt {
      */
     private repositoryPtt(Context c, OrderDao mOrderDao, ProductDao mProductDao, AppExecutors mAppExecutors){
 
+        this.mContext = c;
         this.mOrderDao = mOrderDao;
         this.mProductDao = mProductDao;
         this.mAppExecutors = mAppExecutors;
@@ -54,14 +53,6 @@ public class repositoryPtt {
         this.FoodList = new MutableLiveData<>();
         this.DrinkList = new MutableLiveData<>();
         this.DessertList = new MutableLiveData<>();
-
-        //FoodList.observeForever();
-
-        /*this.mAppExecutors.getNetworkIO().execute(() -> {
-            this.FoodList.postValue(getFoodFromApi());
-            this.DrinkList.postValue(getDrinkFromApi());
-            this.DessertList.postValue(getDessertFromApi());
-        });*/
 
         LiveData<List<Product>> food = api.getFood_list();
         food.observeForever(newFood -> {
@@ -109,102 +100,47 @@ public class repositoryPtt {
     }
 
 
+    //This method is used to get the products from the api one time only
     private synchronized void initializeData() {
 
-        // Only perform initialization once per app lifetime. If initialization has already been
-        // performed, we have nothing to do in this method.
-        if (mInitialized) return;
-        mInitialized = true;
+        //Utilizando las SharedPreferences podemos controlar que los productos de la api solo se carguen una vez en toda la aplicación.
+        //El valor  del booleano será falso la primera vez y cuando entre en el código del método será verdadero por lo que ese código solo se ejecutará una vez.
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        boolean mLocked = sharedPreferences.getBoolean("Pref_One_Charge",false);
 
-        // This method call triggers Sunshine to create its task to synchronize weather data
-        // periodically.
-        //mWeatherNetworkDataSource.scheduleRecurringFetchWeatherSync();
+        if (mLocked) return;
+        sharedPreferences.edit().putBoolean("Pref_One_Charge",true).apply();
+
 
         mAppExecutors.getDiskIO().execute(() -> {
-            //if (isFetchNeeded()) {
-                api.loadFood();
-                api.loadDessert();
-                api.loadDrink();
-            //}
+            api.loadFood();
+            api.loadDessert();
+            api.loadDrink();
         });
     }
-    /**
-     * GET all the foods from the API
-     *
-     * @return List containing all the food from the API
-     */
-    private List<Product> getFoodFromApi() {
-        List<Product> foods = new ArrayList<>();
-        if (api.getFood_list() != null) {
-            //foods = api.getFood_list();
 
-            Log.v(LOAD_FoodList, "Getting foods from the API");
-            for (Product e : foods) {
-                Log.v("repositoryPtt", "Repository: " + e.getProduct_name());
-            }
-
-        }
-        return foods;
-    }
-
+    //Get food type products
     public LiveData<List<Product>> getFoodProductList(){
-        //return this.FoodList;
         initializeData();
         return mProductDao.getFoodProducts();
     }
 
-    /**
-     * GET all the drinks from the API
-     *
-     * @return List containing all the drinks from the API
-     */
-    private List<Product> getDrinkFromApi() {
-        List<Product> drinks = new ArrayList<>();
-        if (api.getListDrinks() != null) {
-            //drinks = api.getListDrinks();
 
-            Log.v(LOAD_DrinkList, "Getting drinks from the API");
-            for (Product e : drinks) {
-                Log.v("repositoryPtt", "Repository: " + e.getProduct_name());
-            }
-
-        }
-        return drinks;
-    }
-
+    //Get drink type products
     public LiveData<List<Product>> getDrinkProductList(){
-        //return this.DrinkList;
         initializeData();
         return mProductDao.getDrinkProducts();
     }
 
-    /**
-     * GET all the desserts from the API
-     *
-     * @return List containing all the desserts from the API
-     */
-    private List<Product> getDessertFromApi() {
-        List<Product> desserts = new ArrayList<>();
-        if (api.getListDessert() != null) {
-            //desserts = api.getListDessert();
 
-            Log.v(LOAD_DessertList, "Getting desserts from the API");
-            for (Product e : desserts) {
-                Log.v("repositoryPtt", "Repository: " + e.getProduct_name());
-            }
-
-        }
-        return desserts;
-    }
-
+    //Get dessert type products
     public LiveData<List<Product>> getDessertProductList(){
-        //return this.DessertList;
         initializeData();
         return mProductDao.getDessertProducts();
     }
 
     /**
-     * Preference operation
+     * Preference operation to get the number of the tables according to settings.
      * @param context
      * @return number of tables
      */
@@ -225,29 +161,32 @@ public class repositoryPtt {
      * Database related operations
      **/
 
+    //Get all not paid Orders from the database
     public LiveData<List<Order>> getAllPendentOrders() {
-        //initializeData();
         return mOrderDao.getAllPendentOrders();
     }
 
+    //Get all paid Orders from the database
     public LiveData<List<Order>> getAllPaidOrders() {
-        //initializeData();
         return mOrderDao.getAllPaidOrders();
     }
 
+    //Get an order with an id from the database
     public LiveData<Order> getOrderById(long order_id) {
-        //initializeData();
         return mOrderDao.getById(order_id);
     }
 
+    //Delete the order from the database
     public void deleteOrder(Order order){
         mAppExecutors.getDiskIO().execute(()-> mOrderDao.deleteOrder(order));
     }
 
+    //Update the order from the database
     public void updateOrder(Order order){
         mAppExecutors.getDiskIO().execute(()-> mOrderDao.updateOrder(order));
     }
 
+    //Add the order to the database
     public void addOrder(Order order){
         mAppExecutors.getDiskIO().execute(()-> mOrderDao.addOrder(order));
     }
