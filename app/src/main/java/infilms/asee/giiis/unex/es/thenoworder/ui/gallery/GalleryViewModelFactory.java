@@ -4,13 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
+import infilms.asee.giiis.unex.es.thenoworder.repository.AppRepository;
 
 public class GalleryViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    private final repositoryPtt mRepository;
+    private final AppRepository mRepository;
 
-    public GalleryViewModelFactory(repositoryPtt repository) {
+    public GalleryViewModelFactory(AppRepository repository) {
         this.mRepository = repository;
     }
 

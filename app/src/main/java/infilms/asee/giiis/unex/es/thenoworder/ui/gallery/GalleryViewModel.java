@@ -5,13 +5,13 @@ import java.util.List;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
-import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
+import infilms.asee.giiis.unex.es.thenoworder.repository.AppRepository;
 
 class GalleryViewModel extends ViewModel {
 
     private final LiveData<List<Order>> PaidOrders;
 
-    GalleryViewModel(repositoryPtt repository) {
+    GalleryViewModel(AppRepository repository) {
         PaidOrders = repository.getAllPaidOrders();
     }
 

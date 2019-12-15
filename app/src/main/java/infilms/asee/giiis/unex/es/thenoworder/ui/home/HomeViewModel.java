@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel;
 import java.util.List;
 
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
-import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
+import infilms.asee.giiis.unex.es.thenoworder.repository.AppRepository;
 
 public class HomeViewModel extends ViewModel {
 
     private final LiveData<List<Order>> PendentOrders;
 
-    public HomeViewModel(repositoryPtt repository) {
+    public HomeViewModel(AppRepository repository) {
         PendentOrders = repository.getAllPendentOrders();
     }
 

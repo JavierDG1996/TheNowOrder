@@ -6,16 +6,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
-import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
+import infilms.asee.giiis.unex.es.thenoworder.repository.AppRepository;
 
 public class ProductViewModel extends ViewModel {
 
-    private final repositoryPtt mRepository;
+    private final AppRepository mRepository;
     private LiveData<List<Product>> foodList;
     private LiveData<List<Product>> drinkList;
     private LiveData<List<Product>> dessertList;
 
-    public ProductViewModel(repositoryPtt repository){
+    public ProductViewModel(AppRepository repository){
         this.mRepository = repository;
         this.foodList = repository.getFoodProductList();
         this.drinkList = repository.getDrinkProductList();

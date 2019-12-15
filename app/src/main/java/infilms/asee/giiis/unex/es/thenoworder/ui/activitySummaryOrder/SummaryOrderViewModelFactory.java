@@ -4,14 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
+import infilms.asee.giiis.unex.es.thenoworder.repository.AppRepository;
 
 public class SummaryOrderViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    private final repositoryPtt mRepository;
+    private final AppRepository mRepository;
     private final long order_id;
 
-    public SummaryOrderViewModelFactory(repositoryPtt repository, long order_id) {
+    public SummaryOrderViewModelFactory(AppRepository repository, long order_id) {
 
         this.mRepository = repository;
         this.order_id = order_id;

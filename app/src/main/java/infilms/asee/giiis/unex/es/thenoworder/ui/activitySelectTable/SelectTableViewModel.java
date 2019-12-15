@@ -5,13 +5,13 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
+import infilms.asee.giiis.unex.es.thenoworder.repository.AppRepository;
 
 class SelectTableViewModel extends ViewModel {
 
     private LiveData<Integer> mesas;
 
-    SelectTableViewModel(Context context, repositoryPtt repository) {
+    SelectTableViewModel(Context context, AppRepository repository) {
 
         this.mesas = repository.getTables(context);
     }

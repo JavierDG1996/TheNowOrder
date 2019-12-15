@@ -5,14 +5,14 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
-import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
+import infilms.asee.giiis.unex.es.thenoworder.repository.AppRepository;
 
 public class CreateOrderViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    private final repositoryPtt mRepository;
+    private final AppRepository mRepository;
     private final Order order;
 
-    public CreateOrderViewModelFactory(repositoryPtt repository, Order order) {
+    public CreateOrderViewModelFactory(AppRepository repository, Order order) {
 
         this.mRepository = repository;
         this.order = order;

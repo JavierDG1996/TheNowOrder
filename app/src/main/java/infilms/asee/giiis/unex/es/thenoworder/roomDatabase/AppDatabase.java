@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
 import infilms.asee.giiis.unex.es.thenoworder.classes.Product;
 
-@Database(entities = {Order.class, Product.class}, version = 3)
+@Database(entities = {Order.class, Product.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase  extends RoomDatabase {
 
     private static AppDatabase instance;

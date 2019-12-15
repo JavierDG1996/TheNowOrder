@@ -4,15 +4,15 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import infilms.asee.giiis.unex.es.thenoworder.classes.Order;
-import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
+import infilms.asee.giiis.unex.es.thenoworder.repository.AppRepository;
 
 public class SummaryOrderViewModel extends ViewModel {
 
 
-    private final repositoryPtt mRepository;
+    private final AppRepository mRepository;
     private final LiveData<Order> order;
 
-    SummaryOrderViewModel(repositoryPtt repository, long order_id) {
+    SummaryOrderViewModel(AppRepository repository, long order_id) {
         this.mRepository = repository;
         this.order = mRepository.getOrderById(order_id);
     }

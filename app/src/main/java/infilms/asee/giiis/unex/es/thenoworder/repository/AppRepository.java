@@ -1,5 +1,6 @@
 package infilms.asee.giiis.unex.es.thenoworder.repository;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -17,9 +18,10 @@ import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.OrderDao;
 import infilms.asee.giiis.unex.es.thenoworder.roomDatabase.ProductDao;
 import infilms.asee.giiis.unex.es.thenoworder.ui.settings.SettingsFragment;
 
-public class repositoryPtt {
+public class AppRepository {
     private static final Object LOCK = new Object();
-    private static repositoryPtt instance;
+    @SuppressLint("StaticFieldLeak")
+    public static AppRepository instance;
     private Context mContext;
 
     private final OrderDao mOrderDao;
@@ -43,7 +45,7 @@ public class repositoryPtt {
      *
      * @param c Activity context from where we are instantiating the repository
      */
-    private repositoryPtt(Context c, OrderDao mOrderDao, ProductDao mProductDao, AppExecutors mAppExecutors){
+    private AppRepository(Context c, OrderDao mOrderDao, ProductDao mProductDao, AppExecutors mAppExecutors){
 
         this.mContext = c;
         this.mOrderDao = mOrderDao;
@@ -55,31 +57,25 @@ public class repositoryPtt {
         this.DessertList = new MutableLiveData<>();
 
         LiveData<List<Product>> food = api.getFood_list();
-        food.observeForever(newFood -> {
-            mAppExecutors.getDiskIO().execute(() -> {
-                mProductDao.deleteFoodProducts();
+        food.observeForever(newFood -> mAppExecutors.getDiskIO().execute(() -> {
+            mProductDao.deleteFoodProducts();
 
-                mProductDao.bulkInsert(newFood);
-            });
-        });
+            mProductDao.bulkInsert(newFood);
+        }));
 
         LiveData<List<Product>> drinks = api.getListDrinks();
-        drinks.observeForever(newDrinks -> {
-            mAppExecutors.getDiskIO().execute(() -> {
-                mProductDao.deleteDrinkProducts();
+        drinks.observeForever(newDrinks -> mAppExecutors.getDiskIO().execute(() -> {
+            mProductDao.deleteDrinkProducts();
 
-                mProductDao.bulkInsert(newDrinks);
-            });
-        });
+            mProductDao.bulkInsert(newDrinks);
+        }));
 
         LiveData<List<Product>> desserts = api.getListDessert();
-        desserts.observeForever(newDesserts -> {
-            mAppExecutors.getDiskIO().execute(() -> {
-                mProductDao.deleteDessertProducts();
+        desserts.observeForever(newDesserts -> mAppExecutors.getDiskIO().execute(() -> {
+            mProductDao.deleteDessertProducts();
 
-                mProductDao.bulkInsert(newDesserts);
-            });
-        });
+            mProductDao.bulkInsert(newDesserts);
+        }));
 
 
     }
@@ -90,10 +86,10 @@ public class repositoryPtt {
      * @param c Activity context from where we are instantiating the repository
      * @return Instance of repository
      */
-    public static repositoryPtt getInstance(Context c, OrderDao mOrderDao, ProductDao mProductDao, AppExecutors mAppExecutors){
+    public static AppRepository getInstance(Context c, OrderDao mOrderDao, ProductDao mProductDao, AppExecutors mAppExecutors){
         if(instance == null){
             synchronized (LOCK) {
-                instance = new repositoryPtt(c.getApplicationContext(), mOrderDao,mProductDao, mAppExecutors);
+                instance = new AppRepository(c.getApplicationContext(), mOrderDao,mProductDao, mAppExecutors);
             }
         }
         return instance;

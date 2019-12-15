@@ -3,13 +3,13 @@ package infilms.asee.giiis.unex.es.thenoworder.ui.home;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import infilms.asee.giiis.unex.es.thenoworder.repository.repositoryPtt;
+import infilms.asee.giiis.unex.es.thenoworder.repository.AppRepository;
 
 public class HomeViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    private final repositoryPtt mRepository;
+    private final AppRepository mRepository;
 
-    public HomeViewModelFactory(repositoryPtt repository) {
+    public HomeViewModelFactory(AppRepository repository) {
         this.mRepository = repository;
     }
 
